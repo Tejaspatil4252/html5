@@ -30,7 +30,7 @@ const Home = () => {
     
     <HomeSectionOurServices />
       <HomeSection3Services />
-      <HomeSection4Stats />
+     
       
       <HomeSection6Features />
       

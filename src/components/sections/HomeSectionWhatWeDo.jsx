@@ -10,20 +10,39 @@ const HomeSectionWhatWeDo = () => {
       title: "Our Products",
       color: "from-red-500 to-red-600",
       items: [
+        // Previous Products
         "Vision CFS",
         "Vision ICD",
-        "Empty Yard Management System",
+        "Empty Yard Management System", 
         "WMS (Bonded Warehouse)",
         "Shipping Line: Import Export Manifest",
         "E-Invoice Provider",
-        "Bulk Digisign Application"
+        "Bulk Digisign Application",
+        
+        // New Products
+        "CFS NAV Management System",
+        "ICD Management System", 
+        "Bonded Warehouse System",
+        "General Warehouse System",
+        "Empty Yard Depot System",
+        "E-Custodian Air Cargo System",
+        "MOOWR Bonded Software",
+        "Domestic Import Export Software",
+        "Transportation Management System",
+        "Bulk Digi-Sign Software",
+        "Shipping Line EGM Merge",
+        "Shipping Line Import/Export Manifest",
+        "Stone Crusher Software", 
+        "Third Party API Integration",
+        "Tally, RFID, SAP System Integration",
+        "Store and Maintenance System"
       ],
       link: "/products"
     },
     {
       icon: FaUsers,
       title: "Consulting",
-      color: "from-red-600 to-red-700",
+      color: "from-red-600 to-red-700", 
       description: "Our consulting will equip you with a fresh outlook to approach ideas. If you already have an idea, we will help you polish and implement it. Leverage the power of technology & take your business to the greatest heights.",
       link: "/consulting"
     },
@@ -33,7 +52,7 @@ const HomeSectionWhatWeDo = () => {
       color: "from-red-700 to-red-800",
       items: [
         "Software Development",
-        "Testing & QA",
+        "Testing & QA", 
         "Application Services",
         "IT Consulting",
         "Data Analytics",
@@ -91,7 +110,7 @@ const HomeSectionWhatWeDo = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -5, scale: 1.02 }}
             >
               {/* Gradient Header */}
               <div className={`bg-gradient-to-r ${card.color} h-2 w-full`}></div>
@@ -99,66 +118,64 @@ const HomeSectionWhatWeDo = () => {
               <div className="p-6 flex-grow">
                 {/* Icon & Title */}
                 <div className="flex items-center space-x-4 mb-6">
-                  <motion.div 
-                    className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  <div 
+                    className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 group-hover:scale-110"
                   >
                     <card.icon className="text-xl" />
-                  </motion.div>
-                  <h3 className="text-xl font-bold text-gray-800">
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-red-600 transition-colors duration-300">
                     {card.title}
                   </h3>
                 </div>
 
                 {/* Content */}
-                <motion.div 
-                  className="text-gray-600"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                >
+                <div className="text-gray-600">
                   {card.description ? (
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                       {card.description}
                     </p>
                   ) : (
-                    <ul className="space-y-3">
-                      {card.items.map((item, itemIndex) => (
-                        <motion.li 
-                          key={item}
-                          className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer"
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: 0.5 + itemIndex * 0.1 }}
-                        >
-                          {item}
-                        </motion.li>
-                      ))}
-                    </ul>
+                    <div className="relative">
+                      {/* Ultra Slim Scrollbars - Both Vertical and Horizontal */}
+                      <div 
+                        className="space-y-2 max-h-64 overflow-y-auto pr-1
+                          [&::-webkit-scrollbar]:w-1
+                          [&::-webkit-scrollbar]:h-1
+                          [&::-webkit-scrollbar-track]:bg-red-50
+                          [&::-webkit-scrollbar-thumb]:bg-red-300
+                          [&::-webkit-scrollbar-thumb]:rounded-full
+                          [&::-webkit-scrollbar-thumb]:hover:bg-red-400
+                          [scrollbar-width]:thin
+                          [scrollbar-color]:red-300_red-50"
+                      >
+                        {card.items.map((item, itemIndex) => (
+                          <div 
+                            key={item}
+                            className="text-gray-700 hover:text-red-600 transition-all duration-300 cursor-pointer flex items-start space-x-2 group/item hover:scale-105 hover:translate-x-1"
+                          >
+                            <div 
+                              className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0 group-hover/item:scale-125 group-hover/item:bg-red-600 transition-all duration-200"
+                            />
+                            <span className="text-sm leading-relaxed">
+                              {item}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
-                </motion.div>
+                </div>
               </div>
 
-              {/* Read More Button at Bottom */}
+              {/* Read More Button */}
               <div className="px-6 pb-6 mt-auto">
-                <motion.a
+                <a
                   href={card.link}
-                  className="inline-flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors duration-300 group/btn"
-                  whileHover={{ x: 5 }}
+                  className="inline-flex items-center text-red-600 font-semibold hover:text-red-700 transition-all duration-300 group/btn hover:scale-105"
                 >
                   Read More
-                  <motion.svg 
-                    className="w-4 h-4 ml-2" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 3 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </motion.svg>
-                </motion.a>
+                  <FaArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                </a>
               </div>
             </motion.div>
           ))}
