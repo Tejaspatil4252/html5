@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Ensure footer only animates after component is fully loaded
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoaded(true);
@@ -27,20 +26,19 @@ const Footer = () => {
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-red-500 text-2xl font-bold">RapportSoft</h2>
+            <h2 className="text-red-600 text-2xl font-bold">RapptorSoft</h2>
             <p className="text-red-100 leading-relaxed">
-              Software solutions for a small planet. We provide innovative hosting 
-              and development services to help your business thrive.
+              Rapportsoft Consulting & Technology is one of the India's largest Shipping software products company providing innovative and integrated enterprise solutions ensuring customer satisfaction.
             </p>
-            <div className="flex space-x-4">
-              <motion.a
-                href="#"
-                className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-red-600 transition-all duration-300"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaTwitter className="text-lg" />
-              </motion.a>
+            <motion.a
+              href="#"
+              className="inline-flex items-center text-red-600 font-semibold hover:text-red-500 transition-colors duration-300 group"
+              whileHover={{ x: 5 }}
+            >
+              Read More
+              <FaArrowRight className="ml-2 text-sm group-hover:translate-x-1 transition-transform duration-300" />
+            </motion.a>
+            <div className="flex space-x-4 pt-2">
               <motion.a
                 href="#"
                 className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-red-600 transition-all duration-300"
@@ -60,57 +58,68 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* Useful Links */}
+          {/* Services */}
           <motion.div 
             className="space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-xl font-semibold">Useful Links</h3>
+            <h3 className="text-xl font-semibold text-white">Services</h3>
             <ul className="space-y-2">
-              {['Servers', 'Windows Hosting', 'Cloud Hosting', 'OS Servers', 'Linux Servers', 'Policy'].map((link) => (
-                <li key={link}>
+              {[
+                "Software Development",
+                "Testing & QA",
+                "Application Services",
+                "IT Consulting",
+                "Data Analytics",
+                "Infrastructure Services (Hardware)",
+                "Help Desk Services",
+                "Privacy Policy",
+                "Terms & Conditions"
+              ].map((service) => (
+                <li key={service}>
                   <motion.a
                     href="#"
                     className="text-red-100 hover:text-white transition-colors duration-300 block py-1"
                     whileHover={{ x: 5 }}
                   >
-                    {link}
+                    {service}
                   </motion.a>
                 </li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Navigational */}
+          {/* Our Products */}
           <motion.div 
             className="space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-xl font-semibold">Navigational</h3>
+            <h3 className="text-xl font-semibold text-white">Our Products</h3>
             <ul className="space-y-2">
               {[
-                { name: 'Home', path: '/' },
-                { name: 'Domain', path: '/domain' },
-                { name: 'Hosting', path: '/hosting' },
-                { name: 'About', path: '/about' },
-                { name: 'Blog', path: '/blog' },
-                { name: 'Contact', path: '/contact' }
-              ].map((link) => (
-                <li key={link.name}>
-                  <motion.div
+                "VisionCFS",
+                "VisionICD",
+                "Empty Yard Management System",
+                "WMS (Bonded Warehouse)",
+                "Freight Forwarding Management System",
+                "Shipping Line",
+                "E-Invoice Provider",
+                "WhatsApp and SMS Notification",
+                "Mobile Apps Development",
+                "Verified Gross Mass Application (VGM)"
+              ].map((product) => (
+                <li key={product}>
+                  <motion.a
+                    href="#"
+                    className="text-red-100 hover:text-white transition-colors duration-300 block py-1"
                     whileHover={{ x: 5 }}
                   >
-                    <Link
-                      to={link.path}
-                      className="text-red-100 hover:text-white transition-colors duration-300 block py-1"
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
+                    {product}
+                  </motion.a>
                 </li>
               ))}
             </ul>
@@ -123,23 +132,42 @@ const Footer = () => {
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h3 className="text-xl font-semibold">Office</h3>
-            <div className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <FaMapMarkerAlt className="text-white text-lg mt-1" />
-                <p className="text-red-100">123 Tech Street, Digital City, CA 94000</p>
+            <h3 className="text-xl font-semibold text-white">Contacts</h3>
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <FaMapMarkerAlt className="text-red-500 text-lg mt-1 flex-shrink-0" />
+                  <div className="text-red-100 text-sm">
+                    <p className="font-semibold text-white mb-1">Office Address:</p>
+                    <p>Rapportsoft Consulting & Technology Pvt Ltd,</p>
+                    <p>Office No-321, XION, Hinjawadi, Pune,</p>
+                    <p>Maharashtra-411057</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <FaMapMarkerAlt className="text-red-500 text-lg mt-1 flex-shrink-0" />
+                  <p className="text-red-100 text-sm">Akansha Plaza, Talegaon Pune, India - 410 507</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <FaMapMarkerAlt className="text-red-500 text-lg mt-1 flex-shrink-0" />
+                  <p className="text-red-100 text-sm">Shree Heritage A 501, Sangam Nagar, Sangavi, Pune, India - 411 027</p>
+                </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <FaPhone className="text-white text-lg" />
-                <a href="tel:+15551234567" className="text-red-100 hover:text-white transition-colors">
-                  +1 (555) 123-4567
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <FaEnvelope className="text-white text-lg" />
-                <a href="mailto:hello@rapportsoft.com" className="text-red-100 hover:text-white transition-colors">
-                  hello@rapportsoft.com
-                </a>
+              
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center space-x-3">
+                  <FaEnvelope className="text-red-500 text-lg flex-shrink-0" />
+                  <a href="mailto:corp@rapportsoft.co.in" className="text-red-100 hover:text-white transition-colors text-sm">
+                    corp@rapportsoft.co.in
+                  </a>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <FaPhone className="text-red-500 text-lg flex-shrink-0" />
+                  <div className="text-red-100 text-sm">
+                    <a href="tel:8329469330" className="hover:text-white transition-colors block">8329469330</a>
+                    <a href="tel:9011075932" className="hover:text-white transition-colors block">9011075932</a>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -148,7 +176,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <motion.div 
-          className="border-t border-red-500 pt-8 text-center"
+          className="border-t border-red-600 pt-8 text-center"
           initial={{ opacity: 0 }}
           animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}

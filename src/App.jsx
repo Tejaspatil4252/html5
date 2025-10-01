@@ -1,4 +1,4 @@
-// src/App.jsx - UPDATED WITH LOADING
+// src/App.jsx - UPDATED WITH SCROLL TO TOP
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
@@ -9,6 +9,7 @@ import BlogSingle from './pages/BlogSingle'
 import Domain from './pages/Domain'
 import Hosting from './pages/Hosting'
 import PageLoader from './components/PageLoader'
+import ScrollToTop from './components/ScrollToTop'// Import ScrollToTop
 import './index.css'
 
 // Navigation-aware component
@@ -43,6 +44,9 @@ function AppContent() {
         <Route path="/domain" element={<Domain />} />
         <Route path="/hosting" element={<Hosting />} />
       </Routes>
+
+      {/* Scroll to Top Button - Available on all pages */}
+      <ScrollToTop />
     </>
   )
 }
