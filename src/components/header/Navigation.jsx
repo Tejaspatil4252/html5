@@ -9,7 +9,7 @@ const Navigation = () => {
   const navItems = [
     { name: 'Home', path: '/', active: location.pathname === '/' },
     { name: 'About', path: '/about', active: location.pathname === '/about' },
-    { name: 'Domain', path: '/domain', active: location.pathname === '/domain' },
+    { name: 'Products', path: '/products', active: location.pathname === '/products' },
     { name: 'Hosting', path: '/hosting', active: location.pathname === '/hosting' },
     { name: 'Blog', path: '/blog', active: location.pathname === '/blog' },
     { name: 'Contact', path: '/contact', active: location.pathname === '/contact' }

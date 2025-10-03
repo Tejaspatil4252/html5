@@ -3,13 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Import images directly in component
-import bg1 from '../../assets/images/bg_1.jpg';
-import bg2 from '../../assets/images/bg_2.jpg';
+import bg1 from '../../assets/images/bg_1.jpg'; // Static background
 import dashboard1 from '../../assets/images/dashboard_full_1.png';
 import dashboard3 from '../../assets/images/dashboard_full_3.png';
 
 const HomeSection1 = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentDashboard, setCurrentDashboard] = useState(0);
 
   // Static text content that remains the same
   const staticContent = {
@@ -17,67 +16,38 @@ const HomeSection1 = () => {
     description: "Rapportsoft Consulting & Technology is one of the India's largest Shipping software products company providing innovative and integrated enterprise solutions ensuring customer satisfaction.",
   };
 
-  // Only images change in slides
-  const slides = [
-    {
-      bgImage: bg1,
-      dashboard: dashboard1,
-    },
-    {
-      bgImage: bg2,
-      dashboard: dashboard3, 
-    }
-  ];
+  // Only dashboard images change
+  const dashboardImages = [dashboard1, dashboard3];
 
-  const [isPaused, setIsPaused] = useState(false);
-
-  // Auto-slide every 8 seconds
+  // Auto-swap dashboard images every 8 seconds
   useEffect(() => {
-    if(isPaused) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentDashboard((prev) => (prev + 1) % dashboardImages.length);
     }, 8000);
     return () => clearInterval(interval);
-  }, [slides.length, isPaused]);
+  }, [dashboardImages.length]);
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Background Images with Smooth Crossfade */}
-      <div className="absolute inset-0 min-h-screen">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={currentSlide}
-            className="absolute inset-0 min-h-screen"
-            style={{
-              backgroundImage: `url(${slides[currentSlide].bgImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ 
-              duration: 1.2, // Slower for smoother transition
-              ease: "easeInOut"
-            }}
-          >
-            {/* Red Overlay */}
-            <div className="absolute inset-0 bg-red-600/70"></div>
-          </motion.div>
-        </AnimatePresence>
+      {/* STATIC BACKGROUND IMAGE - No animation */}
+      <div 
+        className="absolute inset-0 min-h-screen z-0"
+        style={{
+          backgroundImage: `url(${bg1})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* STATIC RED OVERLAY */}
+        <div className="absolute inset-0 bg-red-600/70"></div>
       </div>
       
-      {/* Static Content - Always visible */}
+      {/* STATIC CONTENT - No animations */}
       <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           
-          {/* Text Content - Static */}
-          <motion.div 
-            className="text-center lg:text-left space-y-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          {/* Text Content - Completely Static */}
+          <div className="text-center lg:text-left space-y-8">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
               {staticContent.title}
             </h1>
@@ -85,76 +55,33 @@ const HomeSection1 = () => {
               {staticContent.description}
             </p>
             
-            {/* Buttons */}
+            {/* Buttons - Static */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <motion.button 
-                className="bg-white text-red-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <button className="bg-white text-red-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors duration-300">
                 Get In Touch
-              </motion.button>
-              <motion.button 
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-red-600 transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              </button>
+              <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-red-600 transition-colors duration-300">
                 Read more
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Dashboard Image - Smooth Slide */}
+          {/* ONLY DASHBOARD IMAGE ANIMATES - Auto-swaps between 2 images */}
           <div className="flex justify-center lg:justify-end">
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence mode="wait">
               <motion.img 
-                key={currentSlide}
-                src={slides[currentSlide].dashboard} 
-                className="w-full max-w-2xl scale-110"
+                key={currentDashboard}
+                src={dashboardImages[currentDashboard]} 
+                className="w-full max-w-2xl"
                 alt="Dashboard"
-                initial={{ 
-                  opacity: 0, 
-                  scale: 0.95,
-                  filter: "blur(4px)"
-                }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1.1,
-                  filter: "blur(0px)"
-                }}
-                exit={{ 
-                  opacity: 0, 
-                  scale: 1.05,
-                  filter: "blur(4px)"
-                }}
-                transition={{ 
-                  duration: 1.2, // Slower transition
-                  ease: [0.25, 0.46, 0.45, 0.94] // Custom ease curve for smoothness
-                }}
-                whileHover={{ 
-                  scale: 1.15,
-                  transition: { duration: 0.3 }
-                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 1.2 }}
               />
             </AnimatePresence>
           </div>
         </div>
-      </div>
-
-      {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
-        {slides.map((_, index) => (
-          <motion.button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full ${
-              currentSlide === index ? 'bg-white' : 'bg-white/50'
-            }`}
-            whileHover={{ scale: 1.3 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-          />
-        ))}
       </div>
     </section>
   );

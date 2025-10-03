@@ -6,7 +6,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import Blog from './pages/Blog'
 import BlogSingle from './pages/BlogSingle'
-import Domain from './pages/Domain'
+import Products from './pages/Products'
 import Hosting from './pages/Hosting'
 import PageLoader from './components/PageLoader'
 import ScrollToTop from './components/ScrollToTop'// Import ScrollToTop
@@ -41,7 +41,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog-single" element={<BlogSingle />} />
-        <Route path="/domain" element={<Domain />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/hosting" element={<Hosting />} />
       </Routes>
 
