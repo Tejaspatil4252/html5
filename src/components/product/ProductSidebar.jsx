@@ -1,4 +1,4 @@
-// src/components/product/ProductSidebar.jsx
+
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ProductTitle from './ProductTitle';
@@ -48,34 +48,34 @@ const ProductSidebar = ({
         </div>
         
         {/* WORKING SEARCH BAR */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="relative"
-        >
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search products..."
-            className="w-full px-4 py-2.5 bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-300 text-gray-700 placeholder-gray-400 text-sm"
-          />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-            {searchTerm ? '🔍' : '✨'}
-          </div>
-          
-          {/* Search Results Count */}
-          {searchTerm && (
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="absolute -bottom-6 left-0 text-xs text-gray-500"
-            >
-              {filteredProducts.length} of {productsData.length} products
-            </motion.div>
-          )}
-        </motion.div>
+<motion.div
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ delay: 0.2 }}
+  className="relative mb-8" // Added margin-bottom to create space
+>
+  <input
+    type="text"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    placeholder="Search products..."
+    className="w-full px-4 py-2.5 bg-white border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-300 text-gray-700 placeholder-gray-400 text-sm"
+  />
+  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+    {searchTerm ? '🔍' : '✨'}
+  </div>
+  
+  {/* FIXED: Search Results Count - Better positioning */}
+  {searchTerm && (
+    <motion.div
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="absolute -bottom-6 left-0 right-0 text-xs text-gray-500 text-center" // Added text-center and full width
+    >
+      {filteredProducts.length} of {productsData.length} products
+    </motion.div>
+  )}
+</motion.div>
       </motion.div>
 
       {/* PRODUCTS LIST - With Search Results */}
@@ -120,21 +120,7 @@ const ProductSidebar = ({
       </div>
 
       {/* FOOTER - Dynamic Count */}
-      <motion.div
-        className="p-6 pt-4 border-t border-red-200/60 flex-shrink-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="text-center">
-          <p className="text-sm font-medium text-gray-700">
-            {searchTerm ? `${filteredProducts.length} results` : `${productsData.length} solutions`}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            {searchTerm ? 'Filtered results' : 'Total products'}
-          </p>
-        </div>
-      </motion.div>
+ 
     </div>
   );
 };
