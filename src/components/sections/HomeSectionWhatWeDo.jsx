@@ -1,6 +1,6 @@
-// src/components/home/HomeSection5WhatWeDo.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom'; // ADD THIS IMPORT
 import { FaBox, FaUsers, FaCogs, FaArrowRight } from 'react-icons/fa';
 
 const HomeSectionWhatWeDo = () => {
@@ -10,16 +10,6 @@ const HomeSectionWhatWeDo = () => {
       title: "Our Products",
       color: "from-red-500 to-red-600",
       items: [
-        // Previous Products
-        "Vision CFS",
-        "Vision ICD",
-        "Empty Yard Management System", 
-        "WMS (Bonded Warehouse)",
-        "Shipping Line: Import Export Manifest",
-        "E-Invoice Provider",
-        "Bulk Digisign Application",
-        
-        // New Products
         "CFS NAV Management System",
         "ICD Management System", 
         "Bonded Warehouse System",
@@ -136,7 +126,7 @@ const HomeSectionWhatWeDo = () => {
                     </p>
                   ) : (
                     <div className="relative">
-                      {/* Ultra Slim Scrollbars - Both Vertical and Horizontal */}
+                      {/* Ultra Slim Scrollbars */}
                       <div 
                         className="space-y-2 max-h-64 overflow-y-auto pr-1
                           [&::-webkit-scrollbar]:w-1
@@ -167,15 +157,15 @@ const HomeSectionWhatWeDo = () => {
                 </div>
               </div>
 
-              {/* Read More Button */}
+              {/* Read More Button - FIXED WITH REACT ROUTER LINK */}
               <div className="px-6 pb-6 mt-auto">
-                <a
-                  href={card.link}
+                <Link
+                  to={card.link}
                   className="inline-flex items-center text-red-600 font-semibold hover:text-red-700 transition-all duration-300 group/btn hover:scale-105"
                 >
                   Read More
                   <FaArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform duration-200" />
-                </a>
+                </Link>
               </div>
             </motion.div>
           ))}

@@ -1,6 +1,7 @@
-// src/App.jsx - UPDATED WITH SCROLL TO TOP
+// src/App.jsx - FIXED VERSION (Proper content blocking)
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -9,32 +10,47 @@ import BlogSingle from './pages/BlogSingle'
 import Products from './pages/Products'
 import Hosting from './pages/Hosting'
 import PageLoader from './components/PageLoader'
-import ScrollToTop from './components/ScrollToTop'// Import ScrollToTop
+import ScrollToTop from './components/ScrollToTop'
 import './index.css'
 
-// Navigation-aware component
 function AppContent() {
-  const [loading, setLoading] = useState(false);
-  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true)
+  const location = useLocation()
 
-  // Show loader when route changes
+  // 🎯 Scroll to top on every route change
   useEffect(() => {
-    setLoading(true);
-    
-    // Hide loader after a short delay (simulate loading)
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  // 🎯 Show loader on route change
+  useEffect(() => {
+    setIsLoading(true)
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800); // 0.8 seconds - adjust as needed
+      setIsLoading(false)
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [location.pathname])
 
-    return () => clearTimeout(timer);
-  }, [location.pathname]); // Trigger when path changes
+  // 🎯 CRITICAL: Return ONLY loader during loading - NO CONTENT
+  if (isLoading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <PageLoader />
+      </motion.div>
+    )
+  }
 
+  // 🎯 ONLY render content when NOT loading
   return (
-    <>
-      {/* Show loader when loading */}
-      {loading && <PageLoader />}
-      
-      {/* Page content */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -44,10 +60,8 @@ function AppContent() {
         <Route path="/products" element={<Products />} />
         <Route path="/hosting" element={<Hosting />} />
       </Routes>
-
-      {/* Scroll to Top Button - Available on all pages */}
       <ScrollToTop />
-    </>
+    </motion.div>
   )
 }
 

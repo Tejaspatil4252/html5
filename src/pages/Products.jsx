@@ -1,6 +1,6 @@
 // src/pages/Products.jsx
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from '../components/header/Navigation'
 import Footer from '../components/footer/Footer'
 import ProductSidebar from '../components/product/ProductSidebar'
@@ -8,16 +8,28 @@ import ProductDetail from '../components/product/ProductDetail';
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-  // In your Products.jsx
-const handleProductSelect = (product) => {
-  setSelectedProduct(product);
-  
-  // Simple scroll to top
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-};
+
+  // Custom handler with scroll functionality
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
+    
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+
+  // Scroll when product is selected via direct access
+  useEffect(() => {
+    if (selectedProduct) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [selectedProduct]);
   
   return (
     <>
@@ -33,12 +45,12 @@ const handleProductSelect = (product) => {
               <div className="sticky top-8">
                 <ProductSidebar 
                   selectedProduct={selectedProduct}
-                  onProductSelect={setSelectedProduct}
+                  onProductSelect={handleProductSelect}
                 />
               </div>
             </div>
             
-            {/* Product Details - UNIVERSAL & CAPTIVATING */}
+            {/* Product Details - RESTORED BEAUTIFUL DESIGN */}
             <div className="flex-1 w-full min-w-0">
               {selectedProduct ? (
                 <ProductDetail product={selectedProduct} />
@@ -120,7 +132,7 @@ const handleProductSelect = (product) => {
                       <h3 className="text-white text-2xl font-bold mb-4">
                         Trusted By Organizations Worldwide
                       </h3>
-                   
+                    
                     </div>
                   </div>
                 </div>
@@ -136,4 +148,4 @@ const handleProductSelect = (product) => {
   )
 }
 
-export default Products;
+export default Products;;

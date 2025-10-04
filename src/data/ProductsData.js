@@ -12,7 +12,13 @@ import transportationImage from '../assets/productImages/Transportation-manageme
 import bulkDigiSignImage from '../assets/productImages/bulk-digi-sign-software.jpg';
 import shippingEgmImage from '../assets/productImages/shipping-line-egm-merge.jpg';
 import shippingManifestImage from '../assets/productImages/Shipping-line-import-export-manifest.jpg';
+import stoneCrusherImage from '../assets/productImages/stone-crusher.jpg';
+import storeMaintenance from "../assets/productImages/storage-maintenance.jpg";
+import apiIntegration from "../assets/productImages/api.jpg";
+import tallyRfidSap from "../assets/productImages/sap.jpg";
+import { s } from 'framer-motion/client';
 
+   
 
 
 
@@ -378,6 +384,46 @@ export const productsData = [
     ]
   }
 },
+      {
+    id: 13,
+    name:"Stone Crusher Software", // Different product
+    image: stoneCrusherImage,
+    description: null, // No description yet
+    highlights: [], // Empty array = won't show highlights section
+    features: null, // Null = won't show features section
+    benefits: null, // Null = won't show benefits section
+    support: null // Null = won't show support section
+  },
+        {
+    id: 14,
+    name:" Third Party API Integration",// Different product
+    image: apiIntegration,
+    description: null, // No description yet
+    highlights: [], // Empty array = won't show highlights section
+    features: null, // Null = won't show features section
+    benefits: null, // Null = won't show benefits section
+    support: null // Null = won't show support section
+  },
+        {
+    id: 15,
+    name:  "Tally, RFID, SAP System Integration", 
+    image: tallyRfidSap ,
+    description: null, // No description yet
+    highlights: [], // Empty array = won't show highlights section
+    features: null, // Null = won't show features section
+    benefits: null, // Null = won't show benefits section
+    support: null // Null = won't show support section
+  },
+        {
+    id: 16,
+    name: "Store and Maintenance System", // Different product
+    image: storeMaintenance,
+    description: null, // No description yet
+    highlights: [], // Empty array = won't show highlights section
+    features: null, // Null = won't show features section
+    benefits: null, // Null = won't show benefits section
+    support: null // Null = won't show support section
+  },
 
 
 

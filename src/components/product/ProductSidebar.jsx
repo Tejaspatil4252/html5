@@ -10,7 +10,7 @@ const ProductSidebar = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // ACTUAL SEARCH FUNCTIONALITY
+  // SEARCH FUNCTIONALITY
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim()) return productsData;
     
@@ -26,7 +26,7 @@ const ProductSidebar = ({
   return (
     <div className="w-full lg:w-88 bg-gradient-to-br from-white to-red-50 rounded-2xl shadow-lg border border-red-100 flex flex-col h-fit max-h-[85vh] sticky top-4"> {/* Changed to h-fit and sticky */}
       
-      {/* HEADER - With Working Search */}
+      {/* HEADER -  Search */}
       <motion.div
         className="p-6 pb-4 border-b border-red-200/60 flex-shrink-0"
         initial={{ opacity: 0, y: -10 }}
