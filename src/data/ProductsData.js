@@ -22,7 +22,7 @@ import { s } from 'framer-motion/client';
 
 
 
-export const productsData = [
+ const productsData = [
       {
     id: 1,
     name: "CFS NAV Management System", // Different product
@@ -428,3 +428,5 @@ export const productsData = [
 
 
 ];
+
+export default productsData;

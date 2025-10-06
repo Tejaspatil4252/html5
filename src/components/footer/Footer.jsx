@@ -1,18 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaArrowRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaArrowRight, FaChevronDown } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // ADD THIS IMPORT
+import productsData from '../../data/ProductsData';
 
-const Footer = () => {
+const Footer = ({ onProductSelect }) => {
+  const navigate = useNavigate(); // ADD THIS HOOK
+  console.log('🔵 Footer.jsx - Imported products:', productsData);
+  
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isProductsExpanded, setIsProductsExpanded] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);
-    
     return () => clearTimeout(timer);
   }, []);
+
+  const visibleProducts = isProductsExpanded ? productsData : productsData.slice(0, 9);
+
+  const handleProductClick = (product) => {
+    // NAVIGATE TO PRODUCTS PAGE WITH THE SELECTED PRODUCT
+    navigate('/products', { state: { selectedProduct: product } });
+    
+    // Also call onProductSelect if we're already on products page
+    if (onProductSelect) {
+      onProductSelect(product);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
 
   return (
     <footer className="bg-black text-white py-12">
@@ -98,31 +116,50 @@ const Footer = () => {
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-xl font-semibold text-white">Our Products</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-semibold text-white">Our Products</h3>
+              <motion.button
+                onClick={() => setIsProductsExpanded(!isProductsExpanded)}
+                className="text-red-500 hover:text-red-400 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaChevronDown className={`transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
+              </motion.button>
+            </div>
+            
             <ul className="space-y-2">
-              {[
-                "VisionCFS",
-                "VisionICD",
-                "Empty Yard Management System",
-                "WMS (Bonded Warehouse)",
-                "Freight Forwarding Management System",
-                "Shipping Line",
-                "E-Invoice Provider",
-                "WhatsApp and SMS Notification",
-                "Mobile Apps Development",
-                "Verified Gross Mass Application (VGM)"
-              ].map((product) => (
-                <li key={product}>
-                  <motion.a
-                    href="#"
-                    className="text-red-100 hover:text-white transition-colors duration-300 block py-1"
-                    whileHover={{ x: 5 }}
+              <AnimatePresence>
+                {visibleProducts.map((product) => (
+                  <motion.li
+                    key={product.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    {product}
-                  </motion.a>
-                </li>
-              ))}
+                    <motion.button
+                      onClick={() => handleProductClick(product)}
+                      className="text-red-100 hover:text-white transition-colors duration-300 block py-1 text-left w-full"
+                      whileHover={{ x: 5 }}
+                    >
+                      {product.name}
+                    </motion.button>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
+
+{productsData.length > 9 && (
+  <motion.button
+    onClick={() => setIsProductsExpanded(!isProductsExpanded)}
+    className="text-red-500 hover:text-red-400 text-sm font-semibold flex items-center gap-1 mt-2"
+    whileHover={{ x: 5 }}
+  >
+    {isProductsExpanded ? 'Show Less' : `+${productsData.length - 9} More`}
+    <FaChevronDown className={`text-xs transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
+  </motion.button>
+)}
           </motion.div>
 
           {/* Contact Info */}

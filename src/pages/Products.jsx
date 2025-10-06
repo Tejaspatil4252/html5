@@ -1,15 +1,25 @@
 // src/pages/Products.jsx
 import React from 'react'
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom'; // ADD THIS IMPORT
 import Navigation from '../components/header/Navigation'
 import Footer from '../components/footer/Footer'
 import ProductSidebar from '../components/product/ProductSidebar'
 import ProductDetail from '../components/product/ProductDetail';
+import productsData from '../data/ProductsData';
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const location = useLocation(); // ADD THIS HOOK
 
-  // Custom handler with scroll functionality
+  // ADD THIS useEffect TO READ NAVIGATION STATE
+  useEffect(() => {
+    if (location.state?.selectedProduct) {
+      console.log('🟢 Navigation state product:', location.state.selectedProduct);
+      setSelectedProduct(location.state.selectedProduct);
+    }
+  }, [location]);
+
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
     
@@ -21,7 +31,6 @@ const Products = () => {
     }, 100);
   };
 
-  // Scroll when product is selected via direct access
   useEffect(() => {
     if (selectedProduct) {
       window.scrollTo({
@@ -35,13 +44,13 @@ const Products = () => {
     <>
       <Navigation/>
       
-      {/* Main Content Area */}
+      {/* Main Content Area - FIXED LAYOUT */}
       <main className="bg-gradient-to-br from-gray-50 to-red-50/20">
-        <div className="container mx-auto px-4 max-w-7xl py-8">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full px-6 py-8">
+          <div className="flex flex-col lg:flex-row gap-12 w-full">
             
-            {/* Sidebar */}
-            <div className="w-full lg:w-88 flex-shrink-0">
+            {/* Sidebar - Pushed to left */}
+            <div className="w-full lg:w-80 flex-shrink-0">
               <div className="sticky top-8">
                 <ProductSidebar 
                   selectedProduct={selectedProduct}
@@ -50,13 +59,13 @@ const Products = () => {
               </div>
             </div>
             
-            {/* Product Details - RESTORED BEAUTIFUL DESIGN */}
+            {/* Product Details - Takes all remaining space */}
             <div className="flex-1 w-full min-w-0">
               {selectedProduct ? (
                 <ProductDetail product={selectedProduct} />
               ) : ( 
-                <div className="bg-gradient-to-r from-red-600 via-red-800 to-black rounded-2xl shadow-2xl border border-red-900 p-16">
-                  <div className="max-w-4xl mx-auto">
+                <div className="bg-gradient-to-r from-red-600 via-red-800 to-red-900 rounded-2xl shadow-2xl border border-red-900 p-12 lg:p-16 w-full">
+                  <div className="w-full">
                     {/* Hero Section */}
                     <div className="text-center mb-16">
                       <div className="w-28 h-28 bg-gradient-to-br from-white/20 to-white/10 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-sm border border-white/20">
@@ -132,7 +141,6 @@ const Products = () => {
                       <h3 className="text-white text-2xl font-bold mb-4">
                         Trusted By Organizations Worldwide
                       </h3>
-                    
                     </div>
                   </div>
                 </div>
@@ -142,10 +150,13 @@ const Products = () => {
           </div>
         </div>
       </main>
+
       
-      <Footer/>
+<Footer 
+  onProductSelect={handleProductSelect}
+/>
     </>
   )
 }
 
-export default Products;;
+export default Products;

@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ProductTitle from './ProductTitle';
-import { productsData } from '../../data/ProductsData';
+import productsData from '../../data/ProductsData';
 
 const ProductSidebar = ({ 
   selectedProduct, 
