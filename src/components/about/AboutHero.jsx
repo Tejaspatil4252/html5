@@ -22,30 +22,31 @@ const AboutHero = () => {
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-red-900 via-red-800 to-rose-900 text-white overflow-hidden min-h-[80vh]">
+    <div className="relative bg-gradient-to-br from-red-900 via-red-800 to-rose-900 text-white overflow-hidden w-full">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-black/20"></div>
       <div className="absolute top-0 right-0 w-72 h-72 bg-red-500 rounded-full -translate-y-36 translate-x-36 opacity-20 blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500 rounded-full translate-y-48 -translate-x-48 opacity-20 blur-3xl"></div>
       
-      <div className="relative container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      {/* Main content with reduced vertical padding */}
+      <section className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start max-w-7xl mx-auto">
           
           {/* Left Column - Enhanced Content */}
-          <div className="max-w-2xl">
+          <div className="max-w-2xl w-full">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-4">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               <span className="text-sm font-semibold">Authorized VGM Vendor • D.G. Shipping Approved</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
               From <span className="bg-gradient-to-r from-orange-300 to-yellow-300 bg-clip-text text-transparent">Traditional</span> to <span className="bg-gradient-to-r from-green-300 to-cyan-300 bg-clip-text text-transparent">Digital</span>
             </h1>
 
             {/* Enhanced Description */}
-            <div className="space-y-4 mb-6">
+            <div className="space-y-3 mb-4">
               <p className="text-lg text-gray-200 leading-relaxed">
                 <strong>Rapportsoft Consulting & Technology</strong> is India's premier shipping software solutions provider, transforming maritime logistics since 2005 through cutting-edge digital innovation.
               </p>
@@ -71,29 +72,29 @@ const AboutHero = () => {
             </div>
 
             {/* Enhanced Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="text-center bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="text-2xl font-bold text-white mb-1">18+</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div className="text-center bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+                <div className="text-xl font-bold text-white mb-1">18+</div>
                 <div className="text-gray-300 text-xs font-medium">Years of Excellence</div>
               </div>
-              <div className="text-center bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="text-2xl font-bold text-white mb-1">India's</div>
+              <div className="text-center bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+                <div className="text-xl font-bold text-white mb-1">India's</div>
                 <div className="text-gray-300 text-xs font-medium">Largest Shipping IT</div>
               </div>
-              <div className="text-center bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="text-2xl font-bold text-white mb-1">2</div>
+              <div className="text-center bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+                <div className="text-xl font-bold text-white mb-1">2</div>
                 <div className="text-gray-300 text-xs font-medium">Global Centers</div>
               </div>
-              <div className="text-center bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="text-2xl font-bold text-white mb-1">2005</div>
+              <div className="text-center bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+                <div className="text-xl font-bold text-white mb-1">2005</div>
                 <div className="text-gray-300 text-xs font-medium">Established</div>
               </div>
             </div>
 
             {/* Trust Indicators */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <h3 className="font-bold text-white mb-2 text-base">Why Choose Rapportsoft?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white-10">
+              <h3 className="font-bold text-white mb-2 text-sm">Why Choose Rapportsoft?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                   <span>Project Management Excellence</span>
@@ -116,11 +117,11 @@ const AboutHero = () => {
 
           {/* Right Column - Better Balanced Image Section */}
           <div 
-            className="relative cursor-pointer flex items-center justify-center h-full"
+            className="relative cursor-pointer flex items-center justify-center h-full w-full"
             onMouseEnter={handleImageHover}
             onMouseLeave={handleImageHover}
           >
-            <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10">
+            <div className="relative w-full h-[450px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10">
               {/* Modern Port Image */}
               <AnimatePresence>
                 {showModern && (
@@ -213,7 +214,7 @@ const AboutHero = () => {
             </motion.div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   )
 }
