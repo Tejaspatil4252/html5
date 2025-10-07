@@ -8,7 +8,7 @@ import Contact from './pages/Contact'
 import Blog from './pages/Blog'
 import BlogSingle from './pages/BlogSingle'
 import Products from './pages/Products'
-import Hosting from './pages/Hosting'
+import Services from './pages/Services'
 import PageLoader from './components/PageLoader'
 import ScrollToTop from './components/ScrollToTop'
 import './index.css'
@@ -58,7 +58,7 @@ function AppContent() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog-single" element={<BlogSingle />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/hosting" element={<Hosting />} />
+        <Route path="/services" element={<Services />} />
       </Routes>
       <ScrollToTop />
     </motion.div>
