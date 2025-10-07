@@ -1,6 +1,6 @@
 import appService from '../assets/serviceIMG/application-serv.jpg';
 import consult from '../assets/serviceIMG/consult.jpg';
-import customSofDev from '../assets/serviceIMG/custom-software-dev.jpg'
+import customSofDev from '../assets/serviceIMG/customSofDev.jpg'
 import dataAnalytics from '../assets/serviceIMG/data-analytics.jpg'
 import helpDesk from '../assets/serviceIMG/help-desk.jpg'
 import infra from '../assets/serviceIMG/infrastructure.jpg'
