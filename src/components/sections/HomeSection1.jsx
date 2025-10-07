@@ -56,7 +56,7 @@ const HomeSection1 = () => {
               <br />
               <span className="text-red-200">For </span>
               <motion.span 
-                className="bg-gradient-to-r from-red-500 via-red-700 to-black bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-red-500 via-red-500 to-red-700 bg-clip-text text-transparent"
                 animate={{ 
                   backgroundPosition: ['0%', '100%', '0%'] 
                 }}
@@ -92,7 +92,7 @@ const HomeSection1 = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <motion.button 
-                className="bg-gradient-to-r from-red-600 to-black text-white px-12 py-4 rounded-lg font-bold text-lg hover:from-red-700 hover:to-gray-900 transition-all duration-300 shadow-2xl hover:shadow-2xl"
+                className="bg-gradient-to-r from-red-600 to-red-800 text-white px-12 py-4 rounded-lg font-bold text-lg hover:from-red-700 hover:to-gray-900 transition-all duration-300 shadow-2xl hover:shadow-2xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

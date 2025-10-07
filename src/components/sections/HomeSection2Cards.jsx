@@ -76,7 +76,7 @@ const HomeSection2Cards = () => {
               }}
             >
               <motion.div
-                className="relative bg-gradient-to-br from-red-600 via-red-800 to-black rounded-2xl p-6 h-full overflow-hidden border border-red-700/50"
+                className="relative bg-gradient-to-br from-red-600 via-red-700 to-red-900 rounded-2xl p-6 h-full overflow-hidden border border-red-700/50"
                 whileHover={{ 
                   y: -12,
                   scale: 1.05,
