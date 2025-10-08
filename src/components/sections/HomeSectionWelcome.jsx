@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const HomeSection3Welcome = () => {
   return (
@@ -174,8 +175,8 @@ const HomeSection3Welcome = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                  <motion.a
-                    href="/about"
+                  <Link to="/about">
+                    <motion.button
                     className="inline-flex items-center bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold hover:from-red-400 hover:to-red-500 transition-all duration-200 group shadow-lg hover:shadow-xl border border-red-400/30"
                     whileHover={{ 
                       scale: 1.03,
@@ -185,7 +186,8 @@ const HomeSection3Welcome = () => {
                   >
                     Read More
                     <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                  </motion.a>
+                  </motion.button>
+                  </Link>
                 </motion.div>
               </div>
 

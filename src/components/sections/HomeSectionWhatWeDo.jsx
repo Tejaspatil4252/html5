@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom'; // ADD THIS IMPORT
+import { Link } from 'react-router-dom'; 
 import { FaBox, FaUsers, FaCogs, FaArrowRight } from 'react-icons/fa';
 
 const HomeSectionWhatWeDo = () => {
@@ -34,7 +34,7 @@ const HomeSectionWhatWeDo = () => {
       title: "Consulting",
       color: "from-red-600 to-red-700", 
       description: "Our consulting will equip you with a fresh outlook to approach ideas. If you already have an idea, we will help you polish and implement it. Leverage the power of technology & take your business to the greatest heights.",
-      link: "/consulting"
+      link: "/services"
     },
     {
       icon: FaCogs,

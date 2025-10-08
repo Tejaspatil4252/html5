@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const ServicesHeader = ({ services }) => { // ← Accept services prop
+const ServicesHeader = ({ services }) => { 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center py-20">
       <div className="container mx-auto px-6">
@@ -94,10 +94,10 @@ const ServicesHeader = ({ services }) => { // ← Accept services prop
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center text-xl text-white group-hover:scale-110 transition-transform duration-300">
-                      {service.icon} {/* ← Use service.icon from data */}
+                      {service.icon}
                     </div>
                     <h3 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
-                      {service.title} {/* ← Use service.title from data */}
+                      {service.title} 
                     </h3>
                   </div>
                 </motion.div>

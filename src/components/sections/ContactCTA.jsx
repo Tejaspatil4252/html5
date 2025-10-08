@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const ContactCTA = () => {
   return (
@@ -121,7 +122,8 @@ const ContactCTA = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <motion.button
+            <Link to="/contact">
+                        <motion.button
               className="group bg-gradient-to-r from-amber-400 to-yellow-500 text-red-900 px-16 py-5 rounded-full font-bold text-xl hover:from-amber-300 hover:to-yellow-400 transition-all duration-300 shadow-2xl relative overflow-hidden border border-amber-300/50"
               whileHover={{ 
                 scale: 1.05,
@@ -148,6 +150,7 @@ const ContactCTA = () => {
                 </motion.div>
               </span>
             </motion.button>
+            </Link>
           </motion.div>
 
           {/* Subtext */}

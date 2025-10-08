@@ -21,7 +21,7 @@ const HomeSection2Cards = () => {
       icon: UsersThree,
       title: "Consulting",
       description: "Our consulting will equip you with a fresh outlook to approach ideas. If you already have an idea, we will help you polish and ...",
-      link: "/consulting",
+      link: "/services",
     }
   ];
 

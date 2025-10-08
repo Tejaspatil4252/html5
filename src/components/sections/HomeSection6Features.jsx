@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import bg1 from '../../assets/images/bg_1.jpg';
+import { Link } from 'react-router-dom';
 
 const HomeSection6Features = () => {
   return (
@@ -102,13 +103,15 @@ const HomeSection6Features = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <motion.button
+            <Link to="/contact">
+                        <motion.button
               className="bg-red-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-red-700 transition-colors duration-300 shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Start Your Project
             </motion.button>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

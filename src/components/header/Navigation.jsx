@@ -11,8 +11,8 @@ const Navigation = () => {
     { name: 'About Us', path: '/about', active: location.pathname === '/about' },
     { name: 'Products', path: '/products', active: location.pathname === '/products' },
     { name: 'Services', path: '/services', active: location.pathname === '/services' },
-    { name: 'Blog', path: '/blog', active: location.pathname === '/blog' },
-    { name: 'Contact', path: '/contact', active: location.pathname === '/contact' }
+    { name: 'Clients', path: '/clients', active: location.pathname === '/clients' },
+    { name: 'Contact Us', path: '/contact', active: location.pathname === '/contact' }
   ];
 
   return (

@@ -1,49 +1,26 @@
-// components/ServiceDisplayMinimal.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowRight, FaChevronRight } from 'react-icons/fa';
 
-const ServicesDisplay = ({ services }) => {
+const ServicesDisplay = ({ services, selectedService, onServiceSelect }) => {
   const [expandedService, setExpandedService] = useState(null);
 
-  // Add this useEffect for hash navigation
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#service-', '');
-      console.log('Hash changed to:', hash);
+    if (selectedService) {
+      console.log('🟢 ServicesDisplay - Auto-expanding service:', selectedService);
+      setExpandedService(selectedService.id);
       
-      if (hash) {
-        // Convert hash to number to match service.id
-        const serviceId = parseInt(hash, 10);
-        console.log('Converted to number:', serviceId);
-        
-        // Force the card to expand
-        setExpandedService(serviceId);
-        
-        // Scroll after expand animation starts
-        setTimeout(() => {
-          const element = document.getElementById(`service-${hash}`);
-          if (element) {
-            element.scrollIntoView({ 
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        }, 300);
-      } else {
-        // If no hash, collapse all
-        setExpandedService(null);
-      }
-    };
-
-    // Check URL on component load
-    handleHashChange();
-    
-    // Listen for URL changes
-    window.addEventListener('hashchange', handleHashChange);
-    
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+      setTimeout(() => {
+        const element = document.getElementById(`service-${selectedService.id}`);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 300);
+    }
+  }, [selectedService]);
 
   const truncateDescription = (description, wordLimit = 25) => {
     const words = description.split(' ');
@@ -55,8 +32,12 @@ const ServicesDisplay = ({ services }) => {
     const newState = expandedService === serviceId ? null : serviceId;
     setExpandedService(newState);
     
+    if (newState && onServiceSelect) {
+      const service = services.find(s => s.id === serviceId);
+      onServiceSelect(service);
+    }
+    
     if (newState) {
-      // Smooth scroll to the expanded card after animation starts
       setTimeout(() => {
         const element = document.getElementById(`service-${serviceId}`);
         if (element) {
@@ -66,13 +47,12 @@ const ServicesDisplay = ({ services }) => {
             inline: 'nearest'
           });
         }
-      }, 150); // Small delay to let expand animation start
+      }, 150);
     }
   };
 
   return (
     <div className="bg-white">
-      {/* Services */}
       <div className="container mx-auto px-6 max-w-6xl py-16">
         <div className="space-y-6">
           {services.map((service, index) => (
@@ -121,7 +101,7 @@ const ServicesDisplay = ({ services }) => {
                   </div>
                 </div>
 
-                {/* Expanded Content */}
+                {/* Expanded Content*/}
                 <AnimatePresence>
                   {expandedService === service.id && (
                     <motion.div
@@ -144,7 +124,6 @@ const ServicesDisplay = ({ services }) => {
                         <div className="relative z-10 w-full">
                           {/* Dynamic Layout */}
                           {service.services && service.services.length > 0 ? (
-                            /* Original split layout when sub-services exist */
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                               {/* Big Image Section - Takes 2 columns */}
                               <div className="lg:col-span-2 space-y-6">
@@ -183,7 +162,6 @@ const ServicesDisplay = ({ services }) => {
                               </div>
                             </div>
                           ) : (
-                            /* Full width layout when no sub-services - Image left, Content right */
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                               {/* Image on Left - Bigger and better fitting */}
                               <div className="space-y-6">
@@ -207,7 +185,7 @@ const ServicesDisplay = ({ services }) => {
                                   </p>
                                 </div>
                                 
-                                {/* Optional: Add a small feature highlight */}
+                                
                                 <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
                                   <h5 className="font-semibold text-gray-900 mb-3">Why Choose This Service?</h5>
                                   <div className="space-y-2 text-sm text-gray-700">

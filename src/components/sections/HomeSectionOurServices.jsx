@@ -122,7 +122,7 @@ const HomeSection4Services = () => {
               {/* Read More Button */}
               <div className="px-6 pb-6">
                 <motion.a
-                  href="/products"
+                  href="/services"
                   className="inline-flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors duration-300 group/btn"
                   whileHover={{ x: 5 }}
                 >

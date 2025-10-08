@@ -1,6 +1,7 @@
 // src/components/hero/HomeSection1.jsx - SMOOTH BOTH WAYS
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {Link } from 'react-router-dom';
 
 // Import images
 import bg1 from '../../assets/images/bg_1.jpg';
@@ -84,20 +85,22 @@ const HomeSection1 = () => {
               products company providing innovative and integrated enterprise solutions.
             </motion.p>
 
-            {/* SINGLE CLEAN BUTTON */}
+            {/* BUTTON */}
             <motion.div 
               className="pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <motion.button 
+              <Link to='/contact'>
+                            <motion.button 
                 className="bg-gradient-to-r from-red-600 to-red-800 text-white px-12 py-4 rounded-lg font-bold text-lg hover:from-red-700 hover:to-gray-900 transition-all duration-300 shadow-2xl hover:shadow-2xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Get In Touch
               </motion.button>
+              </Link>
             </motion.div>
           </div>
         </motion.div>
