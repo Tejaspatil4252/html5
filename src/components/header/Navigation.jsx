@@ -12,7 +12,11 @@ const Navigation = () => {
     { name: 'Products', path: '/products', active: location.pathname === '/products' },
     { name: 'Services', path: '/services', active: location.pathname === '/services' },
     { name: 'Clients', path: '/clients', active: location.pathname === '/clients' },
+    {name: 'Career', path: '/career', active: location.pathname === '/career' },
+    { name: 'News', path: '/news', active: location.pathname === '/news' },
+    { name: 'Blogs', path: '/blogs', active: location.pathname === '/blogs' },
     { name: 'Contact Us', path: '/contact', active: location.pathname === '/contact' }
+
   ];
 
   return (

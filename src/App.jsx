@@ -6,11 +6,14 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Clients from './pages/Clients'
-import BlogSingle from './pages/BlogSingle'
+import BlogSingle from './pages/News'
 import Products from './pages/Products'
 import Services from './pages/Services'
+import Career from './pages/Career'
 import PageLoader from './components/PageLoader'
 import ScrollToTop from './components/ScrollToTop'
+import News from './pages/News'
+import Blogs from './pages/Blogs'
 import './index.css'
 
 function AppContent() {
@@ -59,6 +62,9 @@ function AppContent() {
         <Route path="/blog-single" element={<BlogSingle />} />
         <Route path="/products" element={<Products />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/career" element={<Career />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/blogs" element={<Blogs />} />
       </Routes>
       <ScrollToTop />
     </motion.div>
