@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaMobile, FaChartBar, FaUsers, FaServer, FaHeadset } from 'react-icons/fa';
 
+
 const HomeSection4Services = () => {
   const [visibleCount, setVisibleCount] = useState(3);
 
@@ -121,7 +122,8 @@ const HomeSection4Services = () => {
 
               {/* Read More Button */}
               <div className="px-6 pb-6">
-                <motion.a
+<Link  to="/services">
+                <motion.button
                   href="/services"
                   className="inline-flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors duration-300 group/btn"
                   whileHover={{ x: 5 }}
@@ -138,7 +140,8 @@ const HomeSection4Services = () => {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </motion.svg>
-                </motion.a>
+                </motion.button>
+                </Link>
               </div>
             </motion.div>
           ))}
