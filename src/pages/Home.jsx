@@ -16,12 +16,14 @@ import HomeSection9Clients from '../components/sections/HomeSection9Clients';
 import HomeSection10Blogs from '../components/sections/HomeSection10Blogs';
 import HomeSectionWhatWeDo from '../components/sections/HomeSectionWhatWeDo';
 import ContactCTA from '../components/sections/ContactCTA';
+import PageHero from '../components/header/PageHero';
 
 
 
 const Home = () => {
   return (
     <div className="min-h-screen">
+   
       <Navigation />
       <HomeSectionWelcome />
       <HomeSection1 /> 
