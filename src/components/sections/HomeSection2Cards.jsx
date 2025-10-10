@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Gear, UsersThree } from 'phosphor-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HomeSection2Cards = () => {
+  const navigate = useNavigate();
+  
   const cards = [
     {
       icon: Package,
@@ -51,6 +53,12 @@ const HomeSection2Cards = () => {
         damping: 15
       }
     }
+  };
+
+  // Add click handler for debugging
+  const handleCardClick = (link) => {
+    console.log('Navigating to:', link);
+    navigate(link);
   };
 
   return (
@@ -151,40 +159,40 @@ const HomeSection2Cards = () => {
                     </motion.p>
                   </div>
                   
-                  {/* Button with Pop Animation */}
-<motion.div
-  initial={{ opacity: 0, scale: 0 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{
-    type: "spring",
-    stiffness: 200,
-    damping: 15,
-    delay: index * 0.3 + 0.6
-  }}
-  whileHover={{ 
-    scale: 1.1,
-    x: 5,
-    transition: { type: "spring", stiffness: 400 }
-  }}
->
-  <Link 
-    to={card.link}
-    className="inline-flex items-center px-5 py-2.5 rounded-xl bg-white text-red-600 font-semibold hover:bg-gray-100 transition-all duration-300"
-  >
-    <span>Learn More</span>
-    
-    <motion.svg 
-      className="w-4 h-4 ml-2" 
-      fill="none" 
-      stroke="currentColor" 
-      viewBox="0 0 24 24"
-      animate={{ x: [0, 3, 0] }}
-      transition={{ duration: 1.2, repeat: Infinity, delay: index * 0.3 + 0.8 }}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-    </motion.svg>
-  </Link>
-</motion.div>
+                  {/* Button with Pop Animation - FIXED */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 15,
+                      delay: index * 0.3 + 0.6
+                    }}
+                    whileHover={{ 
+                      scale: 1.1,
+                      x: 5,
+                      transition: { type: "spring", stiffness: 400 }
+                    }}
+                  >
+                    <button 
+                      onClick={() => handleCardClick(card.link)}
+                      className="inline-flex items-center px-5 py-2.5 rounded-xl bg-white text-red-600 font-semibold hover:bg-gray-100 transition-all duration-300 cursor-pointer"
+                    >
+                      <span>Learn More</span>
+                      
+                      <motion.svg 
+                        className="w-4 h-4 ml-2" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{ duration: 1.2, repeat: Infinity, delay: index * 0.3 + 0.8 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </motion.svg>
+                    </button>
+                  </motion.div>
                 </div>
 
                 {/* Corner Accents on Hover */}
