@@ -1,6 +1,6 @@
-// src/App.jsx - FIXED VERSION (Proper content blocking)
+// src/App.jsx - FIXED VERSION (Universal compatibility)
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom' // ← CHANGE THIS LINE
 import { motion } from 'framer-motion'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -73,9 +73,9 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter> {/* ← CHANGE THIS LINE */}
       <AppContent />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
