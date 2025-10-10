@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const ServicesHeader = ({ services }) => { 
+const ServicesHeader = ({ services, onServiceSelect }) => { // ✅ ADD onServiceSelect PROP
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center py-20">
       <div className="container mx-auto px-6">
@@ -89,7 +89,10 @@ const ServicesHeader = ({ services }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  onClick={() => window.location.hash = `service-${service.id}`}
+                  onClick={() => {
+                    
+                    onServiceSelect(service); // ✅ USE THE PROP INSTEAD OF window.location.hash
+                  }}
                   className="bg-white rounded-xl p-6 border border-gray-200 hover:border-red-300 hover:shadow-lg transition-all duration-300 group cursor-pointer"
                 >
                   <div className="flex items-center gap-4">
