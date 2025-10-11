@@ -82,70 +82,70 @@ const PricingCards = () => {
       monthly: [
         {
           plan: 'Silver',
-          originalPrice: 6000,
-          discountedPrice: 6000,
+          originalPrice: 5000,
+          discountedPrice: 5000,
           savings: 0,
-          features: ['2 Users', 'Email Support', 'Manual Backup', 'Basic Reports']
+          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
         },
         {
           plan: 'Gold', 
-          originalPrice: 9000,
-          discountedPrice: 9000,
+          originalPrice: 7000,
+          discountedPrice: 7000,
           savings: 0,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', 'Advanced Reports']
+          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
         },
         {
           plan: 'Diamond',
-          originalPrice: 15000,
-          discountedPrice: 15000,
+          originalPrice: 10000,
+          discountedPrice: 10000,
           savings: 0,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Premium Analytics']
+          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
         }
       ],
       quarterly: [
         {
           plan: 'Silver',
-          originalPrice: 25000,
-          discountedPrice: 15200,
+          originalPrice: 21000,
+          discountedPrice: 12750,
           savings: 10,
-          features: ['2 Users', 'Email Support', 'Manual Backup', 'Basic Reports']
+          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
         },
         {
           plan: 'Gold',
-          originalPrice: 45000,
-          discountedPrice: 21400,
+          originalPrice: 37500,
+          discountedPrice: 17850,
           savings: 15,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', 'Advanced Reports']
+          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
         },
         {
           plan: 'Diamond',
-          originalPrice: 120000,
-          discountedPrice: 32000,
+          originalPrice: 90000,
+          discountedPrice: 24000,
           savings: 20,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Premium Analytics']
+          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
         }
       ],
       yearly: [
         {
           plan: 'Silver',
-          originalPrice: 100000,
-          discountedPrice: 61200,
+          originalPrice: 84000,
+          discountedPrice: 51000,
           savings: 15,
-          features: ['2 Users', 'Email Support', 'Manual Backup', 'Basic Reports']
+          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
         },
         {
           plan: 'Gold',
-          originalPrice: 180000,
-          discountedPrice: 80640,
+          originalPrice: 150000,
+          discountedPrice: 67200,
           savings: 20,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', 'Advanced Reports']
+          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
         },
         {
           plan: 'Diamond',
-          originalPrice: 450000,
-          discountedPrice: 112500,
+          originalPrice: 360000,
+          discountedPrice: 90000,
           savings: 25,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Premium Analytics']
+          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
         }
       ]
     }
