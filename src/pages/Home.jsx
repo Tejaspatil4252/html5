@@ -8,7 +8,7 @@ import HomeSectionWelcome from '../components/sections/HomeSectionWelcome';
 import HomeSectionOurServices from '../components/sections/HomeSectionOurServices';
 import HomeSection3Services from '../components/sections/HomeSection3Services';
 import HomeSection4Stats from '../components/sections/HomeSection4Stats';
-import HomeSection5Pricing from '../components/sections/HomeSection5Pricing';
+
 import HomeSection6Features from '../components/sections/HomeSection6Features';
 import HomeSection7Testimonials from '../components/sections/HomeSection7Testimonials';
 import HomeSection8Services2 from '../components/sections/HomeSection8Services2';

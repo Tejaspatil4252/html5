@@ -32,7 +32,8 @@ const Navigation = () => {
     { name: 'Career', path: '/career', active: location.pathname === '/career' },
     { name: 'News', path: '/news', active: location.pathname === '/news' },
     { name: 'Blogs', path: '/blogs', active: location.pathname === '/blogs' },
-    { name: 'Contact Us', path: '/contact', active: location.pathname === '/contact' }
+    { name: 'Contact Us', path: '/contact', active: location.pathname === '/contact' },
+    { name: 'Pricing', path: '/pricing', active: location.pathname === '/pricing' }
   ];
 
   return (

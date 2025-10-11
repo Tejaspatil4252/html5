@@ -13,7 +13,8 @@ const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage }) => {
     '/career': 'Join Our Team',
     '/news': 'Latest Updates',
     '/blogs': 'Insights & Stories',
-    '/contact': 'Get In Touch'
+    '/contact': 'Get In Touch',
+    '/pricing': "Invest in Excellence"
   };
 
   const currentTitle = pageTitles[currentPage] || 'RapportSoft';

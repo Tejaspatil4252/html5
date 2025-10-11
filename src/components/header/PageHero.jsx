@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom';
 
 const PageHero = ({ pageType = 'home' }) => {
   // Background images for each page
-  const backgroundImages = {
-    home: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    products: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    services: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    career: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    about: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    clients: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    news: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    blogs: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
-    contact: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center"
-  };
+const backgroundImages = {
+  home: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  products: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  services: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  career: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  about: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  clients: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  news: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  blogs: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  contact: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+  pricing: "https://images.unsplash.com/photo-1554224154-2605d7ad4ba9?ixlib=rb-4.0.3&w=1920&h=600&fit=crop&crop=center",
+};
 
   // Page titles
   const pageTitles = {
@@ -26,7 +27,8 @@ const PageHero = ({ pageType = 'home' }) => {
     clients: "Our Clients",
     news: "Latest News",
     blogs: "Insights & Blogs",
-    contact: "Get In Touch"
+    contact: "Get In Touch",
+    pricing : "Invest in Excellence"
   };
 
   const backgroundImage = backgroundImages[pageType] || backgroundImages.home;
