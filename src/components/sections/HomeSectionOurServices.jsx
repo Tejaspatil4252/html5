@@ -1,7 +1,7 @@
 // src/components/home/HomeSection4Services.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaCode, FaMobile, FaChartBar, FaUsers, FaServer, FaHeadset } from 'react-icons/fa';
+import { FaCode, FaMobile, FaChartBar, FaUsers, FaServer, FaHeadset,FaRobot,FaShieldAlt, FaCloud } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 
@@ -27,24 +27,24 @@ const HomeSection4Services = () => {
       description: "We support businesses in achieving fact-based decision-making by converting their historical and real-time, traditional and big data into actionable insights. Our services are tailored to make the raw data and the environment ready, as well as strengthen the business with advanced analytics capabilities.",
       color: "from-red-700 to-red-800"
     },
-    {
-      icon: FaUsers,
-      title: "IT Consulting",
-      description: "Our experts can help to develop and implement an effective IT strategy, assist in smooth digital transformation and system integration as well as advise on improvements to your digital customer experience.",
-      color: "from-red-800 to-red-900"
-    },
-    {
-      icon: FaServer,
-      title: "Infrastructure Services",
-      description: "We apply our 10-year experience to offer a full set of infrastructure services. We can help to maintain and modernize your IT infrastructure and solve various infrastructure-specific issues a business may face.",
-      color: "from-red-900 to-red-950"
-    },
-    {
-      icon: FaHeadset,
-      title: "Help Desk Services",
-      description: "Help desk services for your IT environment or software products. We take on solving diverse issues from answering application functionality questions to performing fixes and enhancements on the code level for improved adoption of software.",
-      color: "from-red-950 to-red-900"
-    }
+ {
+  icon: FaRobot,
+  title: "AI & Machine Learning",
+  description: "Build intelligent systems that learn and adapt. We develop custom AI solutions including predictive analytics, computer vision, and natural language processing that automate complex processes, uncover hidden insights, and drive autonomous decision-making for your business.",
+  color: "from-red-800 to-red-900"
+},
+{
+  icon: FaCloud,
+  title: "Cloud & DevOps Automation",
+  description: "Accelerate digital transformation with automated cloud infrastructure and CI/CD pipelines. We implement scalable cloud architectures with intelligent monitoring, automated deployments, and self-healing systems that ensure 99.9% uptime and optimal performance.",
+  color: "from-red-900 to-red-950"
+},
+{
+  icon: FaShieldAlt,
+  title: "Cybersecurity & AI Protection",
+  description: "Protect your digital assets with AI-powered security solutions. Our advanced threat detection systems use machine learning to identify anomalies, predict potential breaches, and automate responses to security incidents in real-time, ensuring comprehensive protection.",
+  color: "from-red-950 to-red-900"
+}
   ];
 
   const toggleViewMore = () => {

@@ -34,7 +34,7 @@ const HomeSectionWhatWeDo = () => {
       title: "Consulting",
       color: "from-red-600 to-red-700", 
       description: "Our consulting will equip you with a fresh outlook to approach ideas. If you already have an idea, we will help you polish and implement it. Leverage the power of technology & take your business to the greatest heights.",
-      link: "/services"
+      link: "/contact"
     },
     {
       icon: FaCogs,
@@ -45,9 +45,9 @@ const HomeSectionWhatWeDo = () => {
         "Testing & QA", 
         "Application Services",
         "IT Consulting",
-        "Data Analytics",
-        "Infrastructure Services (Hardware)",
-        "Help Desk Services"
+      "AI & Machine Learning",
+      "Cloud & DevOps Automation",
+         "Cybersecurity & AI Protection",
       ],
       link: "/services"
     }

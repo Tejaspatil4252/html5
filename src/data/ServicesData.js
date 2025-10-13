@@ -7,6 +7,9 @@ import infra from '../assets/serviceIMG/infrastructure.jpg'
 import itConsult from '../assets/serviceIMG/it-consulting.jpg'
 import qa from '../assets/serviceIMG/testing-QA.jpg'
 import softwareProDev from '../assets/serviceIMG/software-product-dev.jpg'
+import aiMl from '../assets/serviceIMG/ai-ml.jpg'
+import cloudDevOps from '../assets/serviceIMG/cloud-devops.jpg'
+import cyberSecurity from '../assets/serviceIMG/cyber-secure.jpg'
 
 
 
@@ -73,22 +76,22 @@ const servicesData = [
       "Application maintenance and support"
     ]
   },
-  {
-    id: 6,
-    title: "IT Consulting",
-    description: "Our experts can help to develop and implement an effective IT strategy, assist in smooth digital transformation and system integration as well as advise on improvements to your digital customer experience.",
-    image: itConsult,
-    icon: "🎯",
-    services: [
-      "Digital Transformation Consulting",
-      "Project Management Consulting",
-      "Digital Crisis Management Consulting",
-      "IT Service Management Consulting",
-      "Solution consulting",
-      "Platform consulting",
-      "Enterprise IT consulting"
-    ]
-  },
+{
+  id: 6,
+  title: "AI & Machine Learning",
+  description: "Build intelligent systems that learn and adapt. We develop custom AI solutions including predictive analytics, computer vision, and natural language processing that automate complex processes, uncover hidden insights, and drive autonomous decision-making for your business.",
+  image: aiMl,
+  icon: "🤖",
+  services: [
+    "Predictive Analytics Solutions",
+    "Computer Vision Systems",
+    "Natural Language Processing",
+    "Machine Learning Model Development",
+    "Intelligent Process Automation",
+    "AI-powered Decision Support Systems",
+    "Custom AI Solution Development"
+  ]
+},
   {
     id: 7,
     title: "Data Analytics",
@@ -103,31 +106,38 @@ const servicesData = [
       "Data quality management"
     ]
   },
-  {
-    id: 8,
-    title: "Infrastructure Services",
-    description: "We apply our 10-year experience to offer a full set of infrastructure services. We can help to maintain and modernize your IT infrastructure and solve various infrastructure-specific issues a business may face.",
-    image: infra,
-    icon: "🖥️",
-    services: [
-      "Managed IT support",
-      "Data center support and management",
-      "Cloud consulting and management",
-      "DevOps consulting and implementation",
-      "Networking management services"
-    ]
-  },
-  {
-    id: 9,
-    title: "Help Desk Services",
-    description: "Help desk services for your IT environment or software products. We take on solving diverse issues from answering application functionality questions to performing fixes and enhancements on the code level for improved adoption of software, its smooth functioning and increased end user satisfaction.",
-    image: helpDesk,
-    icon: "📞",
-    services: [
-      "Help desk outsourcing",
-      "IT help desk services"
-    ]
-  }
+ {
+  id: 8,
+  title: "Cloud & DevOps Automation",
+  description: "Accelerate digital transformation with automated cloud infrastructure and CI/CD pipelines. We implement scalable cloud architectures with intelligent monitoring, automated deployments, and self-healing systems that ensure 99.9% uptime and optimal performance.",
+  image: cloudDevOps,
+  icon: "☁️",
+  services: [
+    "Automated Cloud Infrastructure",
+    "CI/CD Pipeline Implementation",
+    "Intelligent System Monitoring",
+    "Self-healing Architecture",
+    "Scalable Cloud Solutions",
+    "DevOps Automation",
+    "Performance Optimization"
+  ]
+},
+{
+  id: 9,
+  title: "Cybersecurity & AI Protection",
+  description: "Protect your digital assets with AI-powered security solutions. Our advanced threat detection systems use machine learning to identify anomalies, predict potential breaches, and automate responses to security incidents in real-time, ensuring comprehensive protection.",
+  image: cyberSecurity  ,
+  icon: "🛡️",
+  services: [
+    "AI-powered Threat Detection",
+    "Anomaly Detection Systems",
+    "Predictive Security Analytics",
+    "Automated Incident Response",
+    "Machine Learning Security",
+    "Real-time Threat Monitoring",
+    "Comprehensive Digital Protection"
+  ]
+}
 ];
 
 export default servicesData;
