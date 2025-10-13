@@ -6,8 +6,8 @@ import { FaRocket, FaBrain, FaChartLine } from 'react-icons/fa';
 
 // Import images
 import customUI from '../../assets/homeIMG/custom-header.jpg';
-import dashboard1 from '../../assets/images/homeSection1.jpg';
-import dashboard3 from '../../assets/images/homeSection2.jpg';
+import dashboard1 from '../../assets/homeIMG/img1.jpg'
+import dashboard3 from '../../assets/homeIMG/img2.jpg';
 
 const HomeSection1 = () => {
   const [currentDashboard, setCurrentDashboard] = useState(0);
