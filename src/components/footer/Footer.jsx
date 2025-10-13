@@ -8,8 +8,7 @@ import servicesData from '../../data/ServicesData';
 const Footer = ({ onProductSelect, onServiceSelect }) => { 
   const navigate = useNavigate();
 
-
-   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isProductsExpanded, setIsProductsExpanded] = useState(false);
 
   useEffect(() => {
@@ -22,22 +21,20 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
   const visibleProducts = isProductsExpanded ? productsData : productsData.slice(0, 9);
 
   const handleProductClick = (product) => {
-    // NAVIGATE TO PRODUCTS PAGE WITH THE SELECTED PRODUCT
     navigate('/products', { state: { selectedProduct: product } });
     if (onProductSelect) {
       onProductSelect(product);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-  const handleServiceClick = (service) => {
-  // Navigate to services page with the selected service
-  navigate('/services', { state: { selectedService: service } });
-  if (onServiceSelect) {
-    onServiceSelect(service);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-};
 
+  const handleServiceClick = (service) => {
+    navigate('/services', { state: { selectedService: service } });
+    if (onServiceSelect) {
+      onServiceSelect(service);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <footer className="bg-black text-white py-12">
@@ -83,81 +80,81 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
             </div>
           </motion.div>
 
-{/* Services */}
-<motion.div 
-  className="space-y-4"
-  initial={{ opacity: 0, y: 20 }}
-  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-  transition={{ duration: 0.6, delay: 0.1 }}
->
-  <h3 className="text-xl font-semibold text-white">Services</h3>
-  <ul className="space-y-2">
-    {servicesData.map((service) => (
-      <li key={service.id}>
-        <motion.button
-          onClick={() => handleServiceClick(service)}
-          className="text-red-100 hover:text-white transition-colors duration-300 block py-1 text-left w-full"
-          whileHover={{ x: 5 }}
-        >
-          {service.title} 
-        </motion.button>
-      </li>
-    ))}
-  </ul>
-</motion.div>
+          {/* Services */}
+          <motion.div 
+            className="space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h3 className="text-xl font-semibold text-white">Services</h3>
+            <ul className="space-y-2">
+              {servicesData.map((service) => (
+                <li key={service.id}>
+                  <motion.button
+                    onClick={() => handleServiceClick(service)}
+                    className="text-red-100 hover:text-white transition-colors duration-300 block py-1 text-left w-full"
+                    whileHover={{ x: 5 }}
+                  >
+                    {service.title} 
+                  </motion.button>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
           {/* Our Products */}
-<motion.div 
-  className="space-y-4"
-  initial={{ opacity: 0, y: 20 }}
-  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-  transition={{ duration: 0.6, delay: 0.2 }}
->
-  <div className="flex items-center gap-4"> 
-    <h3 className="text-xl font-semibold text-white">Our Products</h3>
-    <motion.button
-      onClick={() => setIsProductsExpanded(!isProductsExpanded)}
-      className="text-red-500 hover:text-red-400 transition-colors"
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <FaChevronDown className={`transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
-    </motion.button>
-  </div>
-  
-  <ul className="space-y-2">
-    <AnimatePresence>
-      {visibleProducts.map((product) => (
-        <motion.li
-          key={product.id}
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.button
-            onClick={() => handleProductClick(product)}
-            className="text-red-100 hover:text-white transition-colors duration-300 block py-1 text-left w-full"
-            whileHover={{ x: 5 }}
+          <motion.div 
+            className="space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {product.name}
-          </motion.button>
-        </motion.li>
-      ))}
-    </AnimatePresence>
-  </ul>
+            <div className="flex items-center gap-4"> 
+              <h3 className="text-xl font-semibold text-white">Our Products</h3>
+              <motion.button
+                onClick={() => setIsProductsExpanded(!isProductsExpanded)}
+                className="text-red-500 hover:text-red-400 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaChevronDown className={`transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
+              </motion.button>
+            </div>
+            
+            <ul className="space-y-2">
+              <AnimatePresence>
+                {visibleProducts.map((product) => (
+                  <motion.li
+                    key={product.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.button
+                      onClick={() => handleProductClick(product)}
+                      className="text-red-100 hover:text-white transition-colors duration-300 block py-1 text-left w-full"
+                      whileHover={{ x: 5 }}
+                    >
+                      {product.name}
+                    </motion.button>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
 
-  {productsData.length > 9 && (
-    <motion.button
-      onClick={() => setIsProductsExpanded(!isProductsExpanded)}
-      className="text-red-500 hover:text-red-400 text-sm font-semibold flex items-center gap-1 mt-2"
-      whileHover={{ x: 5 }}
-    >
-      {isProductsExpanded ? 'Show Less' : `+${productsData.length - 9} More`}
-      <FaChevronDown className={`text-xs transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
-    </motion.button>
-  )}
-</motion.div>
+            {productsData.length > 9 && (
+              <motion.button
+                onClick={() => setIsProductsExpanded(!isProductsExpanded)}
+                className="text-red-500 hover:text-red-400 text-sm font-semibold flex items-center gap-1 mt-2"
+                whileHover={{ x: 5 }}
+              >
+                {isProductsExpanded ? 'Show Less' : `+${productsData.length - 9} More`}
+                <FaChevronDown className={`text-xs transform transition-transform duration-300 ${isProductsExpanded ? 'rotate-180' : ''}`} />
+              </motion.button>
+            )}
+          </motion.div>
 
           {/* Contact Info */}
           <motion.div 
@@ -218,6 +215,18 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
           <p className="text-red-100">
             Copyright &copy; {new Date().getFullYear()} All rights reserved | 
             <span className="text-red-600 font-semibold"> RapportSoft</span> - Software Solution for Small Planet
+          </p>
+          
+          {/* ✅ FREEPIK ATTRIBUTION - ADD THIS LINE */}
+          <p className="text-red-100 text-xs mt-2 opacity-70">
+            Images by <a 
+              href="https://www.freepik.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 transition-colors"
+            >
+              Freepik
+            </a>
           </p>
         </motion.div>
       </div>
