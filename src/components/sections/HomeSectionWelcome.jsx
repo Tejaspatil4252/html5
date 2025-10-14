@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaRocket, FaUsers, FaGlobe, FaBrain, FaAward } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import AI from '../../assets/homeIMG/ai-tech.jpg';
+import AI from '../../assets/homeIMG/AI.jpg';
 
 const HomeSection3Welcome = () => {
   return (

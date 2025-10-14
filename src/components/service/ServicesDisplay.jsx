@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowRight, FaChevronRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const ServicesDisplay = ({ services, selectedService, onServiceSelect }) => {
   const [expandedService, setExpandedService] = useState(null);
@@ -222,7 +223,8 @@ const ServicesDisplay = ({ services, selectedService, onServiceSelect }) => {
           <p className="text-gray-300 mb-6">
             Let our experts help you choose the perfect solution
           </p>
-          <motion.button
+          <Link to="/contact">
+                      <motion.button
             className="bg-red-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-700 transition-colors duration-300 flex items-center justify-center gap-2 mx-auto"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
@@ -230,6 +232,7 @@ const ServicesDisplay = ({ services, selectedService, onServiceSelect }) => {
             Get Free Consultation
             <FaArrowRight />
           </motion.button>
+          </Link>
         </div>
       </motion.div>
     </div>

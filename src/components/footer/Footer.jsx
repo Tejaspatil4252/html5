@@ -216,18 +216,6 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
             Copyright &copy; {new Date().getFullYear()} All rights reserved | 
             <span className="text-red-600 font-semibold"> RapportSoft</span> - Software Solution for Small Planet
           </p>
-          
-          {/* ✅ FREEPIK ATTRIBUTION - ADD THIS LINE */}
-          <p className="text-red-100 text-xs mt-2 opacity-70">
-            Images by <a 
-              href="https://www.freepik.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-red-400 hover:text-red-300 transition-colors"
-            >
-              Freepik
-            </a>
-          </p>
         </motion.div>
       </div>
     </footer>
