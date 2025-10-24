@@ -5,7 +5,7 @@ import appServ from '../assets/serviceIMG/appServ.jpg'
 import aiMl from '../assets/serviceIMG/aiMl.jpg'
 import dataAnalytics from '../assets/serviceIMG/dataAnalytics.jpg'
 import cloud from '../assets/serviceIMG/cloud.jpg'
-import cyberSec from '../assets/serviceIMG/cyberSec.jpg'
+import aiAuto from '../assets/serviceIMG/aiAuto.jpg'
 
 import qa from '../assets/serviceIMG/testing-QA.jpg'
 import softwareProDev from '../assets/serviceIMG/software-product-dev.jpg'
@@ -126,18 +126,18 @@ const servicesData = [
 },
 {
   id: 9,
-  title: "Cybersecurity & AI Protection",
-  description: "Protect your digital assets with AI-powered security solutions. Our advanced threat detection systems use machine learning to identify anomalies, predict potential breaches, and automate responses to security incidents in real-time, ensuring comprehensive protection.",
-  image: cyberSec ,
-  icon: "🛡️",
+  title: "AI Automation",
+  description: "Transform manual processes into intelligent automated workflows. Our AI automation solutions learn from your operations, automate repetitive tasks, and continuously optimize for maximum efficiency, accuracy, and cost savings across your entire organization.",
+  image: aiAuto, // You might want to update this image too
+  icon: "⚙️",
   services: [
-    "AI-powered Threat Detection",
-    "Anomaly Detection Systems",
-    "Predictive Security Analytics",
-    "Automated Incident Response",
-    "Machine Learning Security",
-    "Real-time Threat Monitoring",
-    "Comprehensive Digital Protection"
+    "Intelligent Process Automation",
+    "Workflow Optimization",
+    "Task Automation Systems",
+    "Business Process Robotics",
+    "Smart Workflow Management",
+    "Operational Efficiency Solutions",
+    "End-to-End Process Automation"
   ]
 }
 ];

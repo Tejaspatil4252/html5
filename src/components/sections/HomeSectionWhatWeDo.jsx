@@ -47,7 +47,7 @@ const HomeSectionWhatWeDo = () => {
         "IT Consulting",
       "AI & Machine Learning",
       "Cloud & DevOps Automation",
-         "Cybersecurity & AI Protection",
+         "AI Automation ",
       ],
       link: "/services"
     }

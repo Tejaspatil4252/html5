@@ -42,14 +42,14 @@ const CareerHeader = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <div className="flex items-center gap-2 text-red-200">
+            <div className="flex items-center gap-2 text-red-200 mx-2">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Multiple positions available</span>
+              <span className="text-sm font-medium">Fast growing team</span>
             </div>
             
-            <div className="hidden sm:block w-1 h-1 bg-red-300 rounded-full"></div>
+           
             
-            <div className="flex items-center gap-2 text-red-200">
+            <div className="flex items-center gap-2 text-red-200 mx-2">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
               <span className="text-sm font-medium">Competitive packages</span>
             </div>

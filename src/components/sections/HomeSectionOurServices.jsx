@@ -1,7 +1,7 @@
 // src/components/home/HomeSection4Services.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaCode, FaMobile, FaChartBar, FaUsers, FaServer, FaHeadset,FaRobot,FaShieldAlt, FaCloud } from 'react-icons/fa';
+import { FaCode, FaMobile, FaChartBar, FaUsers, FaServer, FaHeadset,FaRobot,FaShieldAlt, FaCloud, FaCogs } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 
@@ -40,9 +40,9 @@ const HomeSection4Services = () => {
   color: "from-red-900 to-red-950"
 },
 {
-  icon: FaShieldAlt,
-  title: "Cybersecurity & AI Protection",
-  description: "Protect your digital assets with AI-powered security solutions. Our advanced threat detection systems use machine learning to identify anomalies, predict potential breaches, and automate responses to security incidents in real-time, ensuring comprehensive protection.",
+  icon: FaCogs,
+  title: "AI Automation",
+  description: "Transform manual processes into intelligent automated workflows. Our AI automation solutions learn from your operations, automate repetitive tasks, and continuously optimize for maximum efficiency, accuracy, and cost savings across your entire organization.",
   color: "from-red-950 to-red-900"
 }
   ];

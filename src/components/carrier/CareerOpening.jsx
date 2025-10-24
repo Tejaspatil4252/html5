@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaChevronDown, FaChevronUp, FaUsers, FaClock } from 'react-icons/fa';
+import { 
+  FaMapMarkerAlt, 
+  FaBriefcase, 
+  FaGraduationCap, 
+  FaChevronDown, 
+  FaChevronUp, 
+  FaUsers, 
+  FaClock,
+  FaTasks,
+  FaCode,
+  FaLightbulb,
+  FaGlobe,
+  FaMoneyBillWave,
+  FaUserGraduate
+} from 'react-icons/fa';
 
 const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -70,12 +84,12 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
             >
               {isExpanded ? (
                 <>
-                  <FaChevronUp className="text-sm" />
+                  <FaChevronUp className="text-sm transition-transform" />
                   Show Less
                 </>
               ) : (
                 <>
-                  <FaChevronDown className="text-sm" />
+                  <FaChevronDown className="text-sm transition-transform" />
                   View Details
                 </>
               )}
@@ -95,21 +109,21 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
             className="border-t border-red-100 overflow-hidden"
           >
             <div className="p-6 bg-red-50">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Left Column */}
-                <div className="space-y-6">
-                  {/* Requirements */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Left Column - Core Requirements */}
+                <div className="space-y-8">
+                  {/* Requirements - HIGH PRIORITY */}
                   {job.requirements && (
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <FaUsers className="text-red-500" />
                         Candidate Requirements
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-3">
                         {job.requirements.map((req, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-700">
-                            <span className="text-red-500 mt-1">•</span>
-                            <span>{req}</span>
+                          <li key={index} className="flex items-start gap-3 text-gray-700">
+                            <span className="text-red-500 mt-1 text-lg">•</span>
+                            <span className="leading-relaxed">{req}</span>
                           </li>
                         ))}
                       </ul>
@@ -119,14 +133,15 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
                   {/* Responsibilities */}
                   {job.responsibilities && (
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <FaTasks className="text-red-500" />
                         Jobs & Responsibilities
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-3">
                         {job.responsibilities.map((resp, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-700">
-                            <span className="text-red-500 mt-1">•</span>
-                            <span>{resp}</span>
+                          <li key={index} className="flex items-start gap-3 text-gray-700">
+                            <span className="text-red-500 mt-1 text-lg">•</span>
+                            <span className="leading-relaxed">{resp}</span>
                           </li>
                         ))}
                       </ul>
@@ -136,14 +151,15 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
                   {/* Experience Areas */}
                   {job.experienceAreas && (
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <FaClock className="text-red-500" />
                         Required Experience
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-3">
                         {job.experienceAreas.map((exp, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-700">
-                            <span className="text-red-500 mt-1">•</span>
-                            <span>{exp}</span>
+                          <li key={index} className="flex items-start gap-3 text-gray-700">
+                            <span className="text-red-500 mt-1 text-lg">•</span>
+                            <span className="leading-relaxed">{exp}</span>
                           </li>
                         ))}
                       </ul>
@@ -151,19 +167,20 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
                   )}
                 </div>
 
-                {/* Right Column */}
-                <div className="space-y-6">
-                  {/* Skills */}
+                {/* Right Column - Skills & Details */}
+                <div className="space-y-8">
+                  {/* Skills - ENHANCED VISUALS */}
                   {job.skills && (
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <FaCode className="text-red-500" />
                         Skills & Technologies
                       </h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-3">
                         {job.skills.map((skill, index) => (
                           <span
                             key={index}
-                            className="bg-white border border-red-200 text-red-600 px-3 py-1 rounded-full text-sm font-medium"
+                            className="bg-white border border-red-200 text-red-600 px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow-md transition-shadow duration-200"
                           >
                             {skill}
                           </span>
@@ -175,14 +192,15 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
                   {/* Concepts */}
                   {job.concepts && (
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <FaLightbulb className="text-red-500" />
                         Key Concepts
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-3">
                         {job.concepts.map((concept, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-700">
-                            <span className="text-red-500 mt-1">•</span>
-                            <span className="text-sm">{concept}</span>
+                          <li key={index} className="flex items-start gap-3 text-gray-700">
+                            <span className="text-red-500 mt-1 text-lg">•</span>
+                            <span className="leading-relaxed text-sm">{concept}</span>
                           </li>
                         ))}
                       </ul>
@@ -190,29 +208,38 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
                   )}
 
                   {/* Additional Info */}
-                  <div className="space-y-3">
-                    <div>
-                      <h5 className="font-semibold text-gray-900">Salary</h5>
-                      <p className="text-gray-700">{job.salary}</p>
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-3">
+                      <FaMoneyBillWave className="text-red-500 mt-1 flex-shrink-0" />
+                      <div>
+                        <h5 className="font-semibold text-gray-900 mb-1">Salary</h5>
+                        <p className="text-gray-700">{job.salary}</p>
+                      </div>
                     </div>
                     
-                    <div>
-                      <h5 className="font-semibold text-gray-900">Required Education</h5>
-                      <p className="text-gray-700">{job.education}</p>
+                    <div className="flex items-start gap-3">
+                      <FaUserGraduate className="text-red-500 mt-1 flex-shrink-0" />
+                      <div>
+                        <h5 className="font-semibold text-gray-900 mb-1">Required Education</h5>
+                        <p className="text-gray-700">{job.education}</p>
+                      </div>
                     </div>
 
                     {job.languages && (
-                      <div>
-                        <h5 className="font-semibold text-gray-900">Languages</h5>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {job.languages.map((lang, index) => (
-                            <span
-                              key={index}
-                              className="bg-white border border-red-200 text-red-600 px-3 py-1 rounded-full text-sm font-medium"
-                            >
-                              {lang}
-                            </span>
-                          ))}
+                      <div className="flex items-start gap-3">
+                        <FaGlobe className="text-red-500 mt-1 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-semibold text-gray-900 mb-2">Languages</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {job.languages.map((lang, index) => (
+                              <span
+                                key={index}
+                                className="bg-white border border-red-200 text-red-600 px-3 py-1 rounded-full text-sm font-medium"
+                              >
+                                {lang}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     )}
@@ -221,12 +248,12 @@ const CareerOpening = ({ job, isSelected, onApply, onClose }) => {
               </div>
 
               {/* Bottom Apply Button */}
-              <div className="mt-6 pt-6 border-t border-red-200">
+              <div className="mt-8 pt-6 border-t border-red-200">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onApply}
-                  className="w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-red-700 transition-colors duration-300"
+                  className="w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-red-700 transition-colors duration-300 shadow-lg hover:shadow-xl"
                 >
                   Apply for {job.title}
                 </motion.button>

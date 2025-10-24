@@ -1,103 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/header/Navigation';
 import Footer from '../components/footer/Footer';
 import CareerHeader from '../components/carrier/CareerHeader';
 import CareerOpening from '../components/carrier/CareerOpening';
 import CareerForm from '../components/carrier/CareerForm';
+import { motion } from 'framer-motion';
 
 const Career = () => {
   const [selectedJob, setSelectedJob] = useState(null);
+  const [jobOpenings, setJobOpenings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Actual job openings data
-  const jobOpenings = [
-    {
-      id: 1,
-      title: "JAVA Programmer",
-      department: "Development",
-      location: "Pune, Mumbai, Maharashtra",
-      type: "Full-time",
-      experience: "0-2 years",
-      positions: 4,
-      description: "We are looking for Java Application Developer - Core Java, JSP, Servlet, Struts, Spring etc with 0 - 2 years of experience",
-      requirements: [
-        "Strong in Java knowledge or hands on",
-        "Presentable having excellent communication, interpersonal, organizational"
-      ],
-      responsibilities: [
-        "Java Development using Core Java, JSP, Servlet, Struts, Spring etc."
-      ],
-      skills: ["Core Java", "JSP", "Servlet", "Struts", "Spring"],
-      salary: "As per Industry standard, basis person's capability and experience",
-      education: "Bachelor and Master's in computer or IT engineering"
-    },
-    {
-      id: 2,
-      title: "UI Developer",
-      department: "Development",
-      location: "Pune, Maharashtra", 
-      type: "Full-time",
-      experience: "0-2 years",
-      positions: 2,
-      description: "We are looking for a skilled UI Developer with experience in modern web technologies",
-      requirements: [
-        "Bachelor's Degree in CS/Information Technology discipline",
-        "0 to 2 years of Responsive Web application development experience",
-        "In depth understanding of JavaScript frameworks/libraries"
-      ],
-      skills: [
-        "HTML5", 
-        "CSS3", 
-        "SASS", 
-        "Bootstrap", 
-        "Angular 4+", 
-        "Typescript",
-        "JavaScript frameworks/libraries",
-        "Bootstrap",
-        "Angular 2+"
-      ],
-      concepts: [
-        "Conceptual understanding of Angular, Ng-template, Ng-content, Ng-container",
-        "Dynamic Component Loading",
-        "Deep understanding on components and modules"
-      ],
-      salary: "As per Industry standard, basis person's capability and experience",
-      education: "Bachelor and Master's in computer or IT engineering and other stream"
-    },
-    {
-      id: 3,
-      title: "Marketing Executive",
-      department: "Marketing & Business Development",
-      location: "Panvel, Mumbai, Maharashtra",
-      type: "Full-time",
-      experience: "0-1 year",
-      positions: 2,
-      description: "Business development / Commercial Executives / Managers having skills in managing relationships to create growth and new business",
-      requirements: [
-        "Confident",
-        "Fluent in English", 
-        "Presentable having excellent communication, interpersonal, organizational, and selling skills"
-      ],
-      responsibilities: [
-        "Evaluate the market for opportunities and focus on areas which could benefit the company",
-        "Generate new leads for the company",
-        "Develop basic business opportunities / plan",
-        "Understand client's business needs and create marketing proposals",
-        "Close new business deals by coordinating with clients",
-        "Develop and negotiate contracts",
-        "Implement requirements according to finalized business model",
-        "Ensure customer satisfaction and business continuity"
-      ],
-      experienceAreas: [
-        "Sales: 0-1 year",
-        "Marketing: 0-1 year", 
-        "Business Development: 0-1 year",
-        "Healthcare Sales Services: 1 year"
-      ],
-      salary: "As per Industry standard, basis person's capability and experience",
-      education: "Bachelor and Master's",
-      languages: ["English"]
+  // Fetch job openings from API
+useEffect(() => {
+  const fetchJobOpenings = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/careers/openings');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch job openings');
+      }
+      
+      const data = await response.json();
+      
+      // Parse JSON strings into actual arrays
+      const parsedData = data.map(job => ({
+        ...job,
+        requirements: job.requirements ? JSON.parse(job.requirements) : null,
+        responsibilities: job.responsibilities ? JSON.parse(job.responsibilities) : null,
+        skills: job.skills ? JSON.parse(job.skills) : null,
+        concepts: job.concepts ? JSON.parse(job.concepts) : null,
+        experienceAreas: job.experienceAreas ? JSON.parse(job.experienceAreas) : null,
+        languages: job.languages ? JSON.parse(job.languages) : null,
+      }));
+      
+      setJobOpenings(parsedData);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error fetching job openings:', err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  fetchJobOpenings();
+}, []);
 
   const handleApplyClick = (jobId) => {
     setSelectedJob(jobId);
@@ -109,33 +58,117 @@ const Career = () => {
 
   const handleFormSubmit = (formData) => {
     // Handle form submission logic here
-    console.log('Form submitted for:', formData.jobTitle);
-    console.log('Applicant data:', formData);
-    setSelectedJob(null); // Close form after submission
-    // Add your API call or form processing logic here
+
+    
+
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <Navigation />
+        <CareerHeader />
+        <div className="bg-gray-50 py-16">
+          <div className="container mx-auto px-6 max-w-4xl text-center">
+            <div className="text-red-600 text-xl">Loading job openings...</div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <>
+        <Navigation />
+        <CareerHeader />
+        <div className="bg-gray-50 py-16">
+          <div className="container mx-auto px-6 max-w-4xl text-center">
+            <div className="text-red-600 text-xl">Error loading job openings</div>
+            <p className="text-gray-600 mt-2">{error}</p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Navigation />
       <CareerHeader />
       
-      {/* Job Openings Section */}
-      <div className="bg-gray-50 py-16">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <div className="space-y-6">
-            {jobOpenings.map((job) => (
-              <CareerOpening
-                key={job.id}
-                job={job}
-                isSelected={selectedJob === job.id}
-                onApply={() => handleApplyClick(job.id)}
-                onClose={handleFormClose}
-              />
-            ))}
+{/* Job Openings Section */}
+<div className="bg-gray-50 py-16">
+  <div className="container mx-auto px-6 max-w-4xl">
+    {/* Error State */}
+    {error ? (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center py-12"
+      >
+        <div className="bg-white rounded-2xl shadow-lg border border-red-100 p-12 max-w-2xl mx-auto">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            Unable to Load Openings
+          </h3>
+          <p className="text-gray-600 text-lg mb-6">
+            We're having trouble loading our current job openings. Please try again later or contact us directly.
+          </p>
+          <div className="text-sm text-gray-500">
+            <p>Error: {error}</p>
+            <p className="mt-2">Email: careers@rapptorsoft.com</p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-6 bg-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-300"
+          >
+            Try Again
+          </button>
+        </div>
+      </motion.div>
+    ) : jobOpenings.length === 0 ? (
+      // No Openings State
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center py-12"
+      >
+        <div className="bg-white rounded-2xl shadow-lg border border-red-100 p-12 max-w-2xl mx-auto">
+          <div className="text-red-500 text-6xl mb-4">💼</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            Currently No Openings
+          </h3>
+          <p className="text-gray-600 text-lg mb-6">
+            We don't have any open positions at the moment, but we're always looking for talented people. 
+            Please check back later for new opportunities!
+          </p>
+          <div className="text-sm text-gray-500">
+            <p>Want to send us your resume anyway?</p>
+            <p>Email us at: careers@rapptorsoft.com</p>
           </div>
         </div>
+      </motion.div>
+    ) : (
+      // Has Openings - Your existing code
+      <div className="space-y-6">
+        {jobOpenings.map((job) => (
+          <CareerOpening
+            key={job.id}
+            job={job}
+            isSelected={selectedJob === job.id}
+            onApply={() => handleApplyClick(job.id)}
+            onClose={handleFormClose}
+          />
+        ))}
       </div>
+    )}
+  </div>
+</div>
 
       {/* Global Form Modal - Renders when any job is selected */}
       {selectedJob && (

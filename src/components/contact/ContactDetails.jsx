@@ -76,13 +76,7 @@ const ContactDetails = () => {
               >
                 corp@rapportsoft.co.in
               </motion.a>
-              <motion.a
-                href="mailto:shivraj@rapportsoft.co.in"
-                whileHover={{ x: 5 }}
-                className="text-red-600 hover:text-red-700 transition-colors duration-300 block text-sm"
-              >
-                shivraj@rapportsoft.co.in
-              </motion.a>
+
             </div>
           </div>
           
