@@ -81,9 +81,10 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
         />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - FIXED CONTAINER PADDING */}
       <div className="relative z-10 py-12">
-        <div className="container mx-auto px-4">
+        {/* Changed from container mx-auto to explicit padding */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> {/* Enhanced container padding */}
           {/* Main Footer Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
             
