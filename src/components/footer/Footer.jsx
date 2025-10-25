@@ -6,6 +6,7 @@ import productsData from '../../data/ProductsData';
 import servicesData from '../../data/ServicesData'; 
 import logo from '../../assets/rapptorsoftLOGO/rapportlogo1.png';
 import bg from '../../assets/footerIMG/footerBG.jpg';
+import  {Link}  from 'react-router-dom';
 
 const Footer = ({ onProductSelect, onServiceSelect }) => { 
   const navigate = useNavigate();
@@ -352,18 +353,22 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
                 All rights reserved. Crafting the future of shipping technology.
               </p>
               
-              <div className="flex items-center gap-6 text-base text-gray-400">
-                {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item, index) => (
-                  <motion.a 
-                    key={index}
-                    href="#" 
-                    className="hover:text-white transition-colors font-light"
-                    whileHover={{ y: -1 }}
-                  >
-                    {item}
-                  </motion.a>
-                ))}
-              </div>
+<div className="flex items-center gap-6 text-base text-gray-400">
+  {[
+    { label: 'Privacy Policy', path: '/privacy-policy' },
+    { label: 'Terms of Service', path: '/terms-and-conditions' }
+    
+  ].map((item, index) => (
+    <motion.div key={index} whileHover={{ y: -1 }}>
+      <Link 
+        to={item.path}
+        className="hover:text-white transition-colors font-light"
+      >
+        {item.label}
+      </Link>
+    </motion.div>
+  ))}
+</div>
             </div>
           </motion.div>
         </div>

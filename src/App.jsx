@@ -15,6 +15,8 @@ import ScrollToTop from './components/ScrollToTop'
 import News from './pages/News'
 import Blogs from './pages/Blogs'
 import Pricing from './pages/Pricing'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsAndConditions from './pages/TermsAndConditions'
 import './index.css'
 
 function AppContent() {
@@ -67,6 +69,8 @@ function AppContent() {
         <Route path="/news" element={<News />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       </Routes>
       <ScrollToTop />
     </motion.div>
