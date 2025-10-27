@@ -17,6 +17,8 @@ import Blogs from './pages/Blogs'
 import Pricing from './pages/Pricing'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
+import Registration from './pages/Registration'
+import Login from './pages/Login'
 import './index.css'
 
 function AppContent() {
@@ -71,6 +73,8 @@ function AppContent() {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <ScrollToTop />
     </motion.div>

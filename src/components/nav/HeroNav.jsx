@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getHeroImage } from './utils';
 import PageTitle from './PageTitle';
+import { FaUserPlus } from 'react-icons/fa';
 import InteractiveAnimation from './InteractiveAnimation';
 
 const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage }) => {
@@ -78,14 +79,16 @@ const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage }) => {
               ))}
               
               {/* Get Started Button */}
-              <div className="ml-4">
-                <Link
-                  to="/contact"
-                  className="bg-white text-gray-900 px-6 py-2.5 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 block"
-                >
-                  Get Started
-                </Link>
-              </div>
+{/* Single Professional Button */}
+<div className="ml-4">
+  <Link
+    to="/registration"
+    className="bg-white text-gray-900 px-6 py-2.5 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2"
+  >
+    <FaUserPlus className="text-sm" />
+    Get Started
+  </Link>
+</div>
             </div>
 
             {/* Mobile Menu Button */}

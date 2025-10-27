@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
 
 const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen }) => {
   return (
@@ -58,18 +59,18 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen }
               ))}
               
               {/* Get Started Button */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="ml-4"
-              >
-                <Link
-                  to="/contact"
-                  className="bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-2.5 font-bold rounded-lg hover:shadow-lg transition-all duration-300 block"
-                >
-                  Get Started
-                </Link>
-              </motion.div>
+<motion.div
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="ml-4"
+>
+  <Link
+    to="/registration"  
+    className="bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-2.5 font-bold rounded-lg hover:shadow-lg transition-all duration-300 block"
+  >
+    Get Started
+  </Link>
+</motion.div>
             </div>
 
             {/* Mobile Menu Button */}
