@@ -9,7 +9,7 @@ import ContactMap from '../components/contact/ContactMap';
 const Contact = () => {
   return (
     <>
-      <Navigation/>
+     
       <ContactHeader/>
       
       {/* Reduced padding and tighter grid */}

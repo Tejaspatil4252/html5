@@ -9,7 +9,7 @@ import HomeSection9Clients from '../components/sections/HomeSection9Clients';
 const About = () => {
   return (
   <>
-    <Navigation/>
+  
 
     <AboutHero/>
     <CompanyValues/>

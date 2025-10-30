@@ -42,7 +42,7 @@ const Products = () => {
   
   return (
     <>
-      <Navigation/>
+     
       
       {/* Main Content Area - FIXED LAYOUT */}
       <main className="bg-gradient-to-br from-gray-50 to-red-50/20">

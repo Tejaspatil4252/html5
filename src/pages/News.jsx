@@ -56,7 +56,7 @@ const News = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-white">
-        <Navigation/>
+       
         <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-96">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
@@ -71,7 +71,7 @@ const News = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-white">
-        <Navigation/>
+       
         <EmptyState 
           type="news"
           title="Error Loading News"

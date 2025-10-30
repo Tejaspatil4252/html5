@@ -8,7 +8,7 @@ import FeatureComparisonTable from '../components/price/FeatureComparisonTable'
 const Pricing = () => {
   return (
     <>
-    <Navigation />
+  
     <PriceHeader />
     <FeatureComparisonTable />
     <Price />

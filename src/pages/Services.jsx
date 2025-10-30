@@ -26,7 +26,7 @@ const Services = () => {
 
   return (
     <>
-      <Navigation/>
+     
       <ServicesHeader 
       services={servicesData}
       onServiceSelect={handleServiceSelect}/>

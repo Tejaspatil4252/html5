@@ -70,7 +70,7 @@ const Blog = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-white">
-        <Navigation />
+      
         <EmptyState 
           type="blog"
           title="Error Loading Blog"
@@ -86,7 +86,7 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-white">
-      <Navigation />
+    
       
       <main className="container mx-auto px-4 py-8">
         {/* 🔥 BEAUTIFUL HEADER */}

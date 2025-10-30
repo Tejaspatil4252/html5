@@ -7,7 +7,7 @@ import ClientHeader from '../components/client/ClientHeader';
 const Clients = () => {
   return (
       <>
-    <Navigation/>
+   
     <ClientHeader/>
     <HomeSection9Clients/>
     <Footer/>

@@ -1,4 +1,4 @@
-// src/App.jsx - FIXED VERSION (Proper content blocking)
+// src/App.jsx - UPDATED: Added sign-out loader
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -19,11 +19,34 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
 import Registration from './pages/Registration'
 import Login from './pages/Login'
+import Navigation from './components/header/Navigation'
 import './index.css'
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true)
+  const [isSigningOut, setIsSigningOut] = useState(false) // 🆕 Added sign-out state
+  const [user, setUser] = useState(null)
   const location = useLocation()
+
+  // 🎯 Check if user is logged in on app start
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      const userData = localStorage.getItem('userData');
+      
+      if (token && userData) {
+        try {
+          setUser(JSON.parse(userData));
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('userData');
+        }
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
 
   // 🎯 Scroll to top on every route change
   useEffect(() => {
@@ -39,8 +62,30 @@ function AppContent() {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
+  // 🆕 Handle user sign out with loader
+  const handleSignOut = () => {
+    setIsSigningOut(true); // Show loader
+    
+    setTimeout(() => {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
+      setUser(null);
+      setIsSigningOut(false); // Hide loader
+      
+      // If we're not on the home page, redirect to home
+      if (location.pathname !== '/') {
+        window.location.href = '/';
+      }
+    }, 1000); // Same duration as your page loader
+  }
+
+  // 🎯 Check if current route is auth page (login/register)
+  const isAuthPage = () => {
+    return location.pathname === '/login' || location.pathname === '/registration';
+  }
+
   // 🎯 CRITICAL: Return ONLY loader during loading - NO CONTENT
-  if (isLoading) {
+  if (isLoading || isSigningOut) { // 🆕 Added isSigningOut condition
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -59,6 +104,9 @@ function AppContent() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      {/* 🚨 Conditionally render Navigation - EXCLUDE from auth pages */}
+      {!isAuthPage() && <Navigation user={user} onSignOut={handleSignOut} />}
+      
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -74,7 +122,8 @@ function AppContent() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/login" element={<Login />} />
+        {/* Pass setUser to Login */}
+        <Route path="/login" element={<Login setUser={setUser} />} />
       </Routes>
       <ScrollToTop />
     </motion.div>
