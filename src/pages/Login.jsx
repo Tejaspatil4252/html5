@@ -1,4 +1,4 @@
-  import React, { useState, useCallback } from 'react';
+  import React, { useState, useCallback ,useEffect} from 'react';
   import { motion, AnimatePresence } from 'framer-motion';
  import { 
   FaEnvelope, 
@@ -9,6 +9,7 @@
   FaStar,
   FaCheck  
 } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 
   import { Link } from 'react-router-dom';
 
@@ -17,7 +18,7 @@
       email: '',
       password: ''
     });
-
+     const location = useLocation();  
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: '' });
@@ -123,42 +124,41 @@
 
       setIsLoading(true);
       
-      try {
-        const response = await fetch('http://localhost:8080/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password
-          })
-        });
+       try {
+    const response = await fetch('http://localhost:8080/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password
+      })
+    });
 
-        const result = await response.json();
-        console.log("📥 Login response:", result);
+    const result = await response.json();
+    console.log("📥 Login response:", result);
 
-        if (result.success) {
-          // Store JWT token in localStorage
-          localStorage.setItem('authToken', result.token);
-          
-          const userData = {
-            user_id: result.user.userId,
-            person_name: result.user.personName,
-            email: result.user.email,
-            company_name: result.user.companyName,
-          };
-          localStorage.setItem('userData', JSON.stringify(userData));
-          
-          setUser(userData);
-          
-          // 🆕 Show beautiful success popup instead of toast
-          setShowSuccessPopup(true);
-          
-        } else {
-          throw new Error(result.message || 'Login failed');
-        }
-      } catch (error) {
+    // In your login handleSubmit
+if (result.success === true) {
+  localStorage.setItem('authToken', result.token);
+  
+  const userData = {
+    user_id: result.user.userId,
+    company_id: result.user.companyId,
+    email: result.user.email,
+    person_name: result.user.personName || result.user.person_name, // ← ADD THIS
+    company_name: result.user.companyName || result.user.company_name
+  };
+  
+  localStorage.setItem('userData', JSON.stringify(userData));
+  setUser(userData);
+  setShowSuccessPopup(true);
+
+    } else {
+      throw new Error(result.message || 'Login failed');
+    }
+  } catch (error) {
         console.error('Login error:', error);
         
         let errorMessage = "Login failed. Please check your credentials.";
@@ -191,7 +191,11 @@
     const handleBackToHome = () => {
       showToast('Returning to home page...', 'success');
     };
-
+  useEffect(() => {
+    if (location.state?.message) {
+      showToast(location.state.message, 'error');
+    }
+  }, [location.state]);
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-red-50 to-white flex items-center justify-center p-4">
         
@@ -467,6 +471,7 @@
 
                 {/* Forgot Password */}
                 <motion.div variants={itemVariants} className="text-right">
+                  <Link to ="/forgot-password">
                   <motion.button
                     type="button"
                     onClick={handleForgotPassword}
@@ -476,6 +481,7 @@
                   >
                     Forgot your password?
                   </motion.button>
+                  </Link>
                 </motion.div>
 
                 {/* Login Button */}

@@ -1,6 +1,6 @@
-// src/App.jsx - UPDATED: Added sign-out loader
+// src/App.jsx - UPDATED: Added Protected Route for Pricing
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -20,15 +20,28 @@ import TermsAndConditions from './pages/TermsAndConditions'
 import Registration from './pages/Registration'
 import Login from './pages/Login'
 import Navigation from './components/header/Navigation'
+import ForgotPassword from './components/login/ForgotPassword'
+import ResetPassword from './components/login/ResetPassword'
+import AddBranchModal from './components/AddBranch'
 import './index.css'
+
+// 🆕 Protected Route Component
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    // Redirect to login with message
+    return <Navigate to="/login" replace state={{ message: "Please login to access pricing page" }} />;
+  }
+  return children;
+};
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true)
-  const [isSigningOut, setIsSigningOut] = useState(false) // 🆕 Added sign-out state
+  const [isSigningOut, setIsSigningOut] = useState(false)
   const [user, setUser] = useState(null)
+  const [showAddBranch, setShowAddBranch] = useState(false)
   const location = useLocation()
 
-  // 🎯 Check if user is logged in on app start
+  // 🎯 Check if user is logged in on app star
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
@@ -64,28 +77,28 @@ function AppContent() {
 
   // 🆕 Handle user sign out with loader
   const handleSignOut = () => {
-    setIsSigningOut(true); // Show loader
+    setIsSigningOut(true);
     
     setTimeout(() => {
       localStorage.removeItem('authToken');
       localStorage.removeItem('userData');
       setUser(null);
-      setIsSigningOut(false); // Hide loader
+      setIsSigningOut(false);
       
-      // If we're not on the home page, redirect to home
       if (location.pathname !== '/') {
         window.location.href = '/';
       }
-    }, 1000); // Same duration as your page loader
+    }, 1000);
   }
 
   // 🎯 Check if current route is auth page (login/register)
   const isAuthPage = () => {
-    return location.pathname === '/login' || location.pathname === '/registration';
+    return location.pathname === '/login' || location.pathname === '/registration' || location.pathname === '/forgot-password'  ||
+         location.pathname === '/reset-password';;
   }
 
   // 🎯 CRITICAL: Return ONLY loader during loading - NO CONTENT
-  if (isLoading || isSigningOut) { // 🆕 Added isSigningOut condition
+  if (isLoading || isSigningOut) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -105,7 +118,12 @@ function AppContent() {
       transition={{ duration: 0.4 }}
     >
       {/* 🚨 Conditionally render Navigation - EXCLUDE from auth pages */}
-      {!isAuthPage() && <Navigation user={user} onSignOut={handleSignOut} />}
+      {!isAuthPage() && <Navigation user={user} onSignOut={handleSignOut} onAddBranch={() => setShowAddBranch(true)}  />}
+              {/* 🆕 ADD BRANCH MODAL AT ROOT LEVEL */}
+      <AddBranchModal 
+        isOpen={showAddBranch}
+        onClose={() => setShowAddBranch(false)}
+      />
       
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
@@ -118,12 +136,27 @@ function AppContent() {
         <Route path="/career" element={<Career />} />
         <Route path="/news" element={<News />} />
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/add-branch" element={<AddBranchModal />} />
+
+        
+        
+        {/* 🆕 Protected Pricing Route */}
+        <Route 
+          path="/pricing" 
+          element={
+            <ProtectedRoute user={user}>
+              <Pricing />
+            </ProtectedRoute>
+          } 
+        />
+        
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/registration" element={<Registration />} />
-        {/* Pass setUser to Login */}
         <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
+        <Route path="/reset-password" element={<ResetPassword/>} />
+   
       </Routes>
       <ScrollToTop />
     </motion.div>

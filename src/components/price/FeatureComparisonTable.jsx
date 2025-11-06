@@ -1,49 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FeatureComparisonTable = () => {
   const [activeProduct, setActiveProduct] = useState('EYMS');
-  const [activePlan, setActivePlan] = useState('Silver'); // For mobile plan selection
+  const [activePlan, setActivePlan] = useState('Silver');
+  const [pricingData, setPricingData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const pricingData = {
-    EYMS: {
-      product: "EYMS",
-      description: "Enterprise Yard Management System",
-      plans: ["Silver", "Gold", "Diamond"],
-      features: [
-        { name: "Email Support", silver: "✓", gold: "✓", diamond: "✓" },
-        { name: "WhatsApp Support", silver: "✗", gold: "✓", diamond: "✓" },
-        { name: "Phone Support", silver: "✗", gold: "✗", diamond: "✓" },
-        { name: "Number of Users", silver: "2", gold: "5", diamond: "10" },
-        { name: "Role-based Access", silver: "✗", gold: "✓", diamond: "✓" },
-        { name: "Database Backup", silver: "Manual", gold: "Auto", diamond: "Auto" },
-        { 
-          name: "EDI Reports", 
-          silver: "5 shipping lines included\n₹4,000 per additional line", 
-          gold: "10 shipping lines included\n₹3,500 per additional line", 
-          diamond: "Unlimited shipping lines\nNo additional charges" 
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchPricingData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:8080/api/plans/all');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch pricing data');
         }
-      ]
-    },
-    BWMS: {
-      product: "BWMS",
-      description: "Ballast Water Management System",
-      plans: ["Silver", "Gold", "Diamond"],
-      features: [
-        { name: "Email Support", silver: "✓", gold: "✓", diamond: "✓" },
-        { name: "WhatsApp Support", silver: "✗", gold: "✓", diamond: "✓" },
-        { name: "Phone Support", silver: "✗", gold: "✗", diamond: "✓" },
-        { name: "Number of Users", silver: "2", gold: "5", diamond: "10" },
-        { name: "Role-based Access", silver: "✗", gold: "✓", diamond: "✓" },
-        { name: "Database Backup", silver: "Manual", gold: "Auto", diamond: "Auto" },
-        { 
-          name: "EDI Reports", 
-          silver: "5 shipping lines included\n₹4,000 per additional line", 
-          gold: "10 shipping lines included\n₹3,500 per additional line", 
-          diamond: "Unlimited shipping lines\nNo additional charges" 
-        }
-      ]
-    }
+        
+        const data = await response.json();
+        setPricingData(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching pricing data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPricingData();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <section className="min-h-screen bg-white py-16 flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-red-200 border-t-red-600 rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-600">Loading pricing plans...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <section className="min-h-screen bg-white py-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load data</h3>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // Fallback to empty data if no pricing data
+  const currentProductData = pricingData[activeProduct] || {
+    product: activeProduct,
+    description: "",
+    plans: [],
+    features: []
   };
 
   const getPlanColor = (plan) => {
@@ -154,7 +187,7 @@ const FeatureComparisonTable = () => {
                     />
                   )}
                   <span className="relative z-10">
-                    {pricingData[product].product}
+                    {pricingData[product]?.product || product}
                   </span>
                 </motion.button>
               ))}
@@ -173,7 +206,6 @@ const FeatureComparisonTable = () => {
             
             {/* Desktop Table (hidden on mobile) */}
             <div className="hidden md:block bg-white rounded-3xl border border-red-100 shadow-2xl overflow-hidden">
-              {/* ... Keep your existing desktop table code here ... */}
               {/* Table Header */}
               <motion.div 
                 className="grid grid-cols-4 gap-4 md:gap-6 p-6 md:p-8 bg-gradient-to-r from-white to-red-50 border-b border-red-100"
@@ -186,7 +218,7 @@ const FeatureComparisonTable = () => {
                     Features
                   </h3>
                 </div>
-                {pricingData[activeProduct].plans.map((plan) => {
+                {currentProductData.plans.map((plan) => {
                   const colors = getPlanColor(plan);
                   return (
                     <motion.div
@@ -217,7 +249,7 @@ const FeatureComparisonTable = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {pricingData[activeProduct].features.map((feature, index) => (
+                {currentProductData.features.map((feature, index) => (
                   <motion.div
                     key={feature.name}
                     className={`grid grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 ${
@@ -251,7 +283,7 @@ const FeatureComparisonTable = () => {
             <div className="md:hidden space-y-6">
               {/* Plan Selection for Mobile */}
               <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-                {pricingData[activeProduct].plans.map((plan) => {
+                {currentProductData.plans.map((plan) => {
                   const colors = getPlanColor(plan);
                   return (
                     <motion.button
@@ -280,7 +312,7 @@ const FeatureComparisonTable = () => {
                 {/* Plan Header */}
                 <div className={`p-6 text-center border-b ${getPlanColor(activePlan).bg} ${getPlanColor(activePlan).border}`}>
                   <h3 className={`text-xl font-bold mb-2 ${getPlanColor(activePlan).text}`}>
-                    {activeProduct} {activePlan}
+                    {currentProductData.product} {activePlan}
                   </h3>
                   <div className="text-2xl font-bold text-gray-900">
                     {activePlan === 'Silver' && '₹5,000'}
@@ -292,7 +324,7 @@ const FeatureComparisonTable = () => {
 
                 {/* Features List */}
                 <div className="max-h-[60vh] overflow-y-auto">
-                  {pricingData[activeProduct].features.map((feature, index) => (
+                  {currentProductData.features.map((feature, index) => (
                     <MobileFeatureCell 
                       key={feature.name} 
                       feature={feature} 
@@ -321,7 +353,7 @@ const FeatureComparisonTable = () => {
   );
 };
 
-// Enhanced Feature Cells (for desktop)
+// Enhanced Feature Cells (for desktop) - Keep the same as before
 const EnhancedFeatureCell = ({ value }) => {
   if (value === "✓") {
     return (

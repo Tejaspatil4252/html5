@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import UserDropdown from './UserDropdown';
 
-const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, user, onSignOut }) => {
+// 🆕 ADD onAddBranch to props
+const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, user, onSignOut, onAddBranch }) => {
   return (
     <>
       {/* Sticky Navbar */}
       <nav className="bg-black/95 backdrop-blur-md shadow-xl border-b border-gray-800 fixed top-0 left-0 right-0 z-50">
-        {/* Changed container to be more specific */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between py-4">
             
@@ -70,7 +70,12 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
               {/* Desktop User Area */}
               <div className="hidden lg:flex">
                 {user ? (
-                  <UserDropdown user={user} onSignOut={onSignOut} />
+                  <UserDropdown 
+                    user={user} 
+                    onSignOut={onSignOut}
+                    onAddBranch={onAddBranch} // 🆕 ADD THIS
+                    navbarType="regular"
+                  />
                 ) : (
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -89,7 +94,12 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
               {/* Mobile User Area */}
               <div className="flex lg:hidden items-center gap-2">
                 {user ? (
-                  <UserDropdown user={user} onSignOut={onSignOut} />
+                  <UserDropdown 
+                    user={user} 
+                    onSignOut={onSignOut}
+                    onAddBranch={onAddBranch} // 🆕 ADD THIS
+                    navbarType="regular"
+                  />
                 ) : (
                   !isOpen && (
                     <motion.div

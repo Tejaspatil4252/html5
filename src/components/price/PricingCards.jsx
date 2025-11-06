@@ -1,155 +1,37 @@
 // src/components/pricing/PricingCards.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PricingCards = () => {
   const [billingCycle, setBillingCycle] = useState('monthly');
   const [activeProduct, setActiveProduct] = useState('EYMS');
+  const [pricingData, setPricingData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const pricingData = {
-    EYMS: {
-      monthly: [
-        {
-          plan: 'Silver',
-          originalPrice: 5000,
-          discountedPrice: 5000,
-          savings: 0,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold', 
-          originalPrice: 7000,
-          discountedPrice: 7000,
-          savings: 0,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 10000,
-          discountedPrice: 10000,
-          savings: 0,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
+  // Fetch pricing data from backend
+  useEffect(() => {
+    const fetchPricingData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:8080/api/pricing/all');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch pricing data');
         }
-      ],
-      quarterly: [
-        {
-          plan: 'Silver',
-          originalPrice: 21000,
-          discountedPrice: 12750,
-          savings: 10,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold',
-          originalPrice: 37500,
-          discountedPrice: 17850,
-          savings: 15,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 90000,
-          discountedPrice: 24000,
-          savings: 20,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
-        }
-      ],
-      yearly: [
-        {
-          plan: 'Silver',
-          originalPrice: 84000,
-          discountedPrice: 51000,
-          savings: 15,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold',
-          originalPrice: 150000,
-          discountedPrice: 67200,
-          savings: 20,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 360000,
-          discountedPrice: 90000,
-          savings: 25,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
-        }
-      ]
-    },
-    BWMS: {
-      monthly: [
-        {
-          plan: 'Silver',
-          originalPrice: 5000,
-          discountedPrice: 5000,
-          savings: 0,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold', 
-          originalPrice: 7000,
-          discountedPrice: 7000,
-          savings: 0,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 10000,
-          discountedPrice: 10000,
-          savings: 0,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
-        }
-      ],
-      quarterly: [
-        {
-          plan: 'Silver',
-          originalPrice: 21000,
-          discountedPrice: 12750,
-          savings: 10,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold',
-          originalPrice: 37500,
-          discountedPrice: 17850,
-          savings: 15,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 90000,
-          discountedPrice: 24000,
-          savings: 20,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
-        }
-      ],
-      yearly: [
-        {
-          plan: 'Silver',
-          originalPrice: 84000,
-          discountedPrice: 51000,
-          savings: 15,
-          features: ['2 Users', 'Email Support', 'Manual Backup', '5 EDI Lines']
-        },
-        {
-          plan: 'Gold',
-          originalPrice: 150000,
-          discountedPrice: 67200,
-          savings: 20,
-          features: ['5 Users', 'WhatsApp Support', 'Auto Backup', '10 EDI Lines']
-        },
-        {
-          plan: 'Diamond',
-          originalPrice: 360000,
-          discountedPrice: 90000,
-          savings: 25,
-          features: ['10 Users', 'Phone Support', 'Auto Backup', 'Unlimited EDI']
-        }
-      ]
-    }
-  };
+        
+        const data = await response.json();
+        setPricingData(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching pricing data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPricingData();
+  }, []);
 
   const getPlanColor = (plan) => {
     switch(plan) {
@@ -176,7 +58,53 @@ const PricingCards = () => {
     }
   };
 
-  const currentPricing = pricingData[activeProduct][billingCycle];
+  // Show loading state
+  if (loading) {
+    return (
+      <section className="py-20 bg-white flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-red-200 border-t-red-600 rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-600">Loading pricing plans...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <section className="py-20 bg-white flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load pricing</h3>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // Get current pricing data or fallback to empty
+  const currentProductData = pricingData[activeProduct] || {
+    monthly: [],
+    quarterly: [],
+    yearly: []
+  };
+
+  const currentPricing = currentProductData[billingCycle] || [];
 
   return (
     <section className="py-20 bg-white">
@@ -190,7 +118,7 @@ const PricingCards = () => {
         >
           <div className="bg-white rounded-2xl p-2 border border-red-100 shadow-lg">
             <div className="flex gap-2">
-              {['EYMS', 'BWMS'].map((product) => (
+              {Object.keys(pricingData).map((product) => (
                 <motion.button
                   key={product}
                   onClick={() => setActiveProduct(product)}
@@ -210,7 +138,7 @@ const PricingCards = () => {
                     />
                   )}
                   <span className="relative z-10">
-                    {product} Pricing
+                    {pricingData[product]?.product || product} Pricing
                   </span>
                 </motion.button>
               ))}
@@ -296,7 +224,7 @@ const PricingCards = () => {
                           className="text-2xl font-bold mb-2"
                           style={{ color: colors.text }}
                         >
-                          {activeProduct} {plan.plan}
+                          {currentProductData.product || activeProduct} {plan.plan}
                         </h3>
                         
                         {/* Original Price */}

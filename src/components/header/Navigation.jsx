@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import HeroNav from '../nav/HeroNav';
 import RegularNav from '../nav/RegularNav';
 
-const Navigation = ({ user, onSignOut }) => { // 🆕 Receive user and onSignOut as props
+const Navigation = ({ user, onSignOut, onAddBranch }) => { // 🆕 Receive user and onSignOut as props
   const [hoveredItem, setHoveredItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -81,7 +81,8 @@ const Navigation = ({ user, onSignOut }) => { // 🆕 Receive user and onSignOut
           setHoveredItem={setHoveredItem}
           currentPage={location.pathname}
           user={user} // 🆕 Use prop from App.js
-          onSignOut={onSignOut} // 🆕 Use prop from App.js
+          onSignOut={onSignOut}
+            onAddBranch={onAddBranch} // 🆕 Use prop from App.js
         />
       </div>
 
@@ -96,6 +97,7 @@ const Navigation = ({ user, onSignOut }) => { // 🆕 Receive user and onSignOut
             setIsOpen={setIsOpen}
             user={user} // 🆕 Use prop from App.js
             onSignOut={onSignOut} // 🆕 Use prop from App.js
+              onAddBranch={onAddBranch}
           />
           {isMobile && <div className="h-16"></div>}
         </>
