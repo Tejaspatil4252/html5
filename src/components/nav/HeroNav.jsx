@@ -4,8 +4,9 @@ import PageTitle from './PageTitle';
 import { FaUserPlus } from 'react-icons/fa';
 import InteractiveAnimation from './InteractiveAnimation';
 import UserDropdown from './UserDropdown';
+import logo from '../../assets/rapptorsoftLOGO/rapportlogo1.png';
 
-const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage, user, onSignOut,onAddBranch }) => {
+const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage, user, onSignOut, onAddBranch }) => {
   const pageTitles = {
     '/': 'Innovate. Create. Elevate.',
     '/about': 'Our Story & Mission',
@@ -44,81 +45,82 @@ const HeroNav = ({ navItems, hoveredItem, setHoveredItem, currentPage, user, onS
           {/* Navigation Row - Logo extreme left, rest extreme right */}
           <div className="flex items-center justify-between w-full">
             {/* Logo - Extreme Left */}
-            <div className="flex-shrink-0">
-              <Link to="/" className="relative">
-                <span className="text-2xl sm:text-3xl font-bold text-white drop-shadow-2xl">
-                  RapportSoft
-                </span>
-              </Link>
-            </div>
+<div className="flex-shrink-0 mt-2">
+  <Link to="/" className="relative flex items-center">
+    <img 
+      src={logo} 
+      alt="RapportSoft"
+      className="h-12 sm:h-14 w-auto object-contain" // Increased from h-8 sm:h-9
+    />
+  </Link>
+</div>
 
             {/* Desktop Menu - Extreme Right */}
-{/* Desktop Menu - Extreme Right */}
-<div className="hidden lg:flex items-center gap-8">
-  {/* Navigation Items */}
-  <div className="flex items-center gap-8">
-    {navItems.map((item) => (
-      <div
-        key={item.name}
-        className="relative"
-        onMouseEnter={() => setHoveredItem(item.name)}
-        onMouseLeave={() => setHoveredItem(null)}
-      >
-        <Link
-          to={item.path}
-          className={`relative py-2 font-medium transition-colors duration-300 whitespace-nowrap ${
-            item.active 
-              ? 'text-white' 
-              : 'text-gray-200 hover:text-white'
-          }`}
-        >
-          {item.name}
-          
-          {/* Active Indicator */}
-          {(item.active || hoveredItem === item.name) && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
-          )}
-        </Link>
-      </div>
-    ))}
-  </div>
-  
-  {/* Get Started Button */}
-  {user ? (
-    <UserDropdown 
-      user={user} 
-      onSignOut={onSignOut}
-      onAddBranch={onAddBranch} // 🆕 ADD THIS TO DESKTOP TOO
-      navbarType="hero"
-    />
-  ) : (
-    <Link
-      to="/registration"
-      className="bg-white text-gray-900 px-6 py-2.5 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 whitespace-nowrap"
-    >
-      <FaUserPlus className="text-sm" />
-      Get Started
-    </Link>
-  )}
-</div>
+            <div className="hidden lg:flex items-center gap-8">
+              {/* Navigation Items */}
+              <div className="flex items-center gap-8">
+                {navItems.map((item) => (
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => setHoveredItem(item.name)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                  >
+                    <Link
+                      to={item.path}
+                      className={`relative py-2 font-medium transition-colors duration-300 whitespace-nowrap ${
+                        item.active 
+                          ? 'text-white' 
+                          : 'text-gray-200 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                      
+                      {/* Active Indicator */}
+                      {(item.active || hoveredItem === item.name) && (
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                      )}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Get Started Button */}
+              {user ? (
+                <UserDropdown 
+                  user={user} 
+                  onSignOut={onSignOut}
+                  onAddBranch={onAddBranch}
+                  navbarType="hero"
+                />
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-white text-gray-900 px-6 py-2.5 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 whitespace-nowrap"
+                >
+                  <FaUserPlus className="text-sm" />
+                  Sign In
+                </Link>
+              )}
+            </div>
 
             {/* Mobile Menu */}
             <div className="flex lg:hidden items-center gap-4">
-               {user ? (
-    <UserDropdown 
-      user={user} 
-      onSignOut={onSignOut}
-      onAddBranch={onAddBranch} // 🆕 ADD THIS
-      navbarType="hero"
-    />
-  ) : (
-    <Link
-      to="/registration"
-      className="bg-white text-gray-900 px-4 py-2 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 text-sm whitespace-nowrap"
-    >
-      <FaUserPlus className="text-xs" />
-      Get Started
-    </Link>
+              {user ? (
+                <UserDropdown 
+                  user={user} 
+                  onSignOut={onSignOut}
+                  onAddBranch={onAddBranch}
+                  navbarType="hero"
+                />
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-white text-gray-900 px-4 py-2 font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 text-sm whitespace-nowrap"
+                >
+                  <FaUserPlus className="text-xs" />
+                  Sign In
+                </Link>
               )}
               
               <button className="text-white">

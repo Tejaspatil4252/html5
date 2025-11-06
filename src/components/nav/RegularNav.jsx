@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import UserDropdown from './UserDropdown';
+import logo from '../../assets/rapptorsoftLOGO/rapportlogo1.png';
 
 // 🆕 ADD onAddBranch to props
 const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, user, onSignOut, onAddBranch }) => {
@@ -14,18 +15,19 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
           <div className="flex items-center justify-between py-4">
             
             {/* Logo - Left - Always visible */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex-shrink-0 lg:-ml-18"
-            >
-              <Link 
-                to="/" 
-                className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent hover:from-red-400 hover:to-red-300 transition-all duration-300"
-              >
-                RapportSoft
-              </Link>
-            </motion.div>
+<motion.div
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="flex-shrink-0 lg:-ml-21"
+>
+  <Link to="/" className="flex items-center">
+    <img 
+      src={logo} 
+      alt="RapportSoft"
+      className="h-9 sm:h-10 w-auto object-contain" // Slightly smaller than hero nav
+    />
+  </Link>
+</motion.div>
 
             {/* Desktop Navigation - Hidden on mobile */}
             <div className="hidden lg:flex items-center flex-1 justify-end">
@@ -82,10 +84,10 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
                     whileTap={{ scale: 0.95 }}
                   >
                     <Link
-                      to="/registration"  
+                      to="/login"  
                       className="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 lg:px-6 py-2 lg:py-2.5 font-bold rounded-lg hover:shadow-lg transition-all duration-300 block text-sm lg:text-base"
                     >
-                      Get Started
+                      Sign In
                     </Link>
                   </motion.div>
                 )}
@@ -107,10 +109,10 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
                       whileTap={{ scale: 0.95 }}
                     >
                       <Link
-                        to="/registration"
+                        to="/login"
                         className="bg-gradient-to-r from-red-600 to-red-500 text-white px-3 py-2 font-bold rounded-lg hover:shadow-lg transition-all duration-300 block text-sm whitespace-nowrap"
                       >
-                        Get Started
+                        Sign In
                       </Link>
                     </motion.div>
                   )
@@ -174,11 +176,11 @@ const RegularNav = ({ navItems, hoveredItem, setHoveredItem, isOpen, setIsOpen, 
                   {!user && (
                     <div className="px-4 pt-2">
                       <Link
-                        to="/registration"
+                        to="/login"
                         className="block bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-3 rounded-lg font-bold text-center hover:shadow-lg transition-all duration-300"
                         onClick={() => setIsOpen(false)}
                       >
-                        Get Started
+                        Sign In
                       </Link>
                     </div>
                   )}

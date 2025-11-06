@@ -140,7 +140,7 @@ function AppContent() {
 
         
         
-        {/* 🆕 Protected Pricing Route */}
+        {/* Protected Pricing Route */}
         <Route 
           path="/pricing" 
           element={
