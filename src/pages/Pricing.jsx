@@ -1,3 +1,4 @@
+// src/pages/Pricing.jsx
 import React from 'react'
 import Navigation from '../components/header/Navigation'
 import Footer from '../components/footer/Footer'
@@ -8,13 +9,13 @@ import FeatureComparisonTable from '../components/price/FeatureComparisonTable'
 const Pricing = () => {
   return (
     <>
-  
-    <PriceHeader />
-    <FeatureComparisonTable />
-    <Price />
-    <Footer />
+     
+      <PriceHeader />
+      <FeatureComparisonTable />
+      <Price />
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Pricing
+export default Pricing;

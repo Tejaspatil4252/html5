@@ -1,4 +1,4 @@
-// src/App.jsx - UPDATED: Added Protected Route for Pricing
+// src/App.jsx - UPDATED: Added TokenChecker for auto-logout
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -23,6 +23,7 @@ import Navigation from './components/header/Navigation'
 import ForgotPassword from './components/login/ForgotPassword'
 import ResetPassword from './components/login/ResetPassword'
 import AddBranchModal from './components/AddBranch'
+import TokenChecker from './components/TokenChecker' // 🆕 ADD THIS IMPORT
 import './index.css'
 
 // 🆕 Protected Route Component
@@ -41,7 +42,7 @@ function AppContent() {
   const [showAddBranch, setShowAddBranch] = useState(false)
   const location = useLocation()
 
-  // 🎯 Check if user is logged in on app star
+  // 🎯 Check if user is logged in on app start
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
@@ -117,9 +118,13 @@ function AppContent() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      {/* 🆕 TOKEN CHECKER - Auto logout when token expires */}
+      {user && <TokenChecker user={user} onSignOut={handleSignOut} />}
+      
       {/* 🚨 Conditionally render Navigation - EXCLUDE from auth pages */}
       {!isAuthPage() && <Navigation user={user} onSignOut={handleSignOut} onAddBranch={() => setShowAddBranch(true)}  />}
-              {/* 🆕 ADD BRANCH MODAL AT ROOT LEVEL */}
+      
+      {/* 🆕 ADD BRANCH MODAL AT ROOT LEVEL */}
       <AddBranchModal 
         isOpen={showAddBranch}
         onClose={() => setShowAddBranch(false)}
@@ -137,26 +142,13 @@ function AppContent() {
         <Route path="/news" element={<News />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/add-branch" element={<AddBranchModal />} />
-
-        
-        
-        {/* Protected Pricing Route */}
-        <Route 
-          path="/pricing" 
-          element={
-            <ProtectedRoute user={user}>
-              <Pricing />
-            </ProtectedRoute>
-          } 
-        />
-        
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/reset-password" element={<ResetPassword/>} />
-   
       </Routes>
       <ScrollToTop />
     </motion.div>
@@ -171,4 +163,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
