@@ -67,7 +67,6 @@ useEffect(() => {
   if (loading) {
     return (
       <>
-        <Navigation />
         <CareerHeader />
         <div className="bg-gray-50 py-16">
           <div className="container mx-auto px-6 max-w-4xl text-center">
@@ -82,8 +81,7 @@ useEffect(() => {
   // Error state
   if (error) {
     return (
-      <>
-       
+      <>   
         <CareerHeader />
         <div className="bg-gray-50 py-16">
           <div className="container mx-auto px-6 max-w-4xl text-center">

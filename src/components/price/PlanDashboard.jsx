@@ -618,168 +618,149 @@ const handleUpdateUser = async () => {
               </div>
             </div>
 
-            {/* ✅ OPTIMIZED: Equal height cards with consistent layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {enrichedActivePlans.map((plan) => {
-                const planUsers = getUsersForPlan(
-                  plan.planId,
-                  plan.productType
-                );
-                const usagePercentage =
-                  (planUsers.length / plan.userLimit) * 100;
-                const daysRemaining = getDaysRemaining(plan.endDate);
-                const nextInQueue = queuedPlans[plan.productType]?.[0];
-                const hasUpcomingPlan = !!nextInQueue;
+{/* ✅ OPTIMIZED: Full width for single plan, grid for multiple plans */}
+<div className={`grid ${enrichedActivePlans.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 'grid-cols-1 lg:grid-cols-2'} gap-6`}>
+  {enrichedActivePlans.map((plan) => {
+    const planUsers = getUsersForPlan(plan.planId, plan.productType);
+    const usagePercentage = (planUsers.length / plan.userLimit) * 100;
+    const daysRemaining = getDaysRemaining(plan.endDate);
+    const nextInQueue = queuedPlans[plan.productType]?.[0];
+    const hasUpcomingPlan = !!nextInQueue;
 
-                return (
-                  <div
-                    key={plan.subscriptionId}
-                    className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
-                  >
-                    {/* Plan Header with Dynamic Colors */}
-                    <div
-                      className={`bg-gradient-to-r ${plan.theme?.gradient} p-6 text-white`}
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="text-xl font-bold mb-2">
-                            {plan.productType} {plan.planName}
-                          </h4>
-                          <div className="flex items-center gap-3">
-                            <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
-                              {formatPrice(plan.price)}
-                            </span>
-                            <span className="text-white/80 text-sm">
-                              {plan.plan?.billingCycle}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-                          <span className="text-lg">
-                            {plan.productType === "EYMS" ? "💼" : "🚀"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Plan Details - Flex column to push content properly */}
-                    <div className="p-6 space-y-4 flex-1 flex flex-col">
-                      {/* Plan Info Section */}
-                      <div className="space-y-4 flex-1">
-                        {/* Dates - Compact Layout */}
-                        <div className="flex justify-between items-center text-sm">
-                          <div>
-                            <div className="text-gray-600">Start Date</div>
-                            <div className="font-semibold text-gray-800">
-                              {formatDate(plan.startDate)}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-gray-600">End Date</div>
-                            <div className="font-semibold text-gray-800">
-                              {formatDate(plan.endDate)}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Validity & Usage Combined */}
-                        <div className="space-y-3">
-                          {/* Days Remaining */}
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">
-                              Days Remaining
-                            </span>
-                            <div
-                              className={`font-semibold ${
-                                daysRemaining < 7
-                                  ? "text-red-600"
-                                  : "text-gray-800"
-                              }`}
-                            >
-                              {daysRemaining} days
-                            </div>
-                          </div>
-
-                          {/* Usage */}
-                          <div>
-                            <div className="flex justify-between text-sm text-gray-600 mb-2">
-                              <span>User Allocation</span>
-                              <span className="font-semibold">
-                                {planUsers.length} / {plan.userLimit}
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className={`h-2 rounded-full transition-all duration-1000 ${
-                                  usagePercentage < 70
-                                    ? "bg-green-500"
-                                    : usagePercentage < 90
-                                    ? "bg-yellow-500"
-                                    : "bg-red-500"
-                                }`}
-                                style={{
-                                  width: `${Math.min(usagePercentage, 100)}%`,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Upcoming Plan - Only shows if exists */}
-{/* Upcoming Plan - Only shows if exists */}
-{hasUpcomingPlan && (
-  <div
-    className={`bg-gradient-to-r ${nextInQueue.theme?.light} rounded-xl p-3 border ${nextInQueue.theme?.border}`}
-  >
-    <div className="flex justify-between items-center">
-      <div className="flex-1">
-        <div className="text-xs text-gray-600 mb-1">
-          Upcoming Plan
-        </div>
-        <div className="font-semibold text-gray-800 text-sm">
-          {nextInQueue.planName} • {nextInQueue.billingCycle}
-        </div>
-      </div>
-      <button
-        onClick={() => setConfirmModal({
-          isOpen: true,
-          productType: plan.productType,
-          planName: nextInQueue.planName,
-          billingCycle: nextInQueue.billingCycle
-        })}
-        disabled={jumpLoading[plan.productType]}
-        className={`px-3 py-1 rounded-lg font-semibold text-xs ${
-          jumpLoading[plan.productType]
-            ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-            : "bg-red-600 text-white hover:bg-red-700"
+    return (
+      <div
+        key={plan.subscriptionId}
+        className={`bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
+          enrichedActivePlans.length === 1 ? 'max-w-2xl' : ''
         }`}
       >
-        {jumpLoading[plan.productType] ? "Activating..." : "Activate"}
-      </button>
-    </div>
-  </div>
-)}
-                      </div>
+        {/* Plan Header with Dynamic Colors */}
+        <div className={`bg-gradient-to-r ${plan.theme?.gradient} p-6 text-white`}>
+          <div className="flex justify-between items-start">
+            <div>
+              <h4 className="text-xl font-bold mb-2">
+                {plan.productType} {plan.planName}
+              </h4>
+              <div className="flex items-center gap-3">
+                <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
+                  {formatPrice(plan.price)}
+                </span>
+                <span className="text-white/80 text-sm">
+                  {plan.plan?.billingCycle}
+                </span>
+              </div>
+            </div>
+            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+              <span className="text-lg">
+                {plan.productType === "EYMS" ? "💼" : "🚀"}
+              </span>
+            </div>
+          </div>
+        </div>
 
-                      {/* Add User Button - Always at bottom */}
-                      <button
-                        onClick={() => startAddUser(plan)}
-                        disabled={!canAddMoreUsers(plan) || loading}
-                        className={`w-full py-3 rounded-xl font-semibold transition-all mt-auto ${
-                          !canAddMoreUsers(plan) || loading
-                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                            : "bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl"
-                        }`}
-                      >
-                        {!canAddMoreUsers(plan)
-                          ? "User Limit Reached"
-                          : `Add User to ${plan.productType}`}
-                      </button>
+        {/* Plan Details - Flex column to push content properly */}
+        <div className="p-6 space-y-4 flex-1 flex flex-col">
+          {/* Plan Info Section */}
+          <div className="space-y-4 flex-1">
+            {/* Dates - Compact Layout */}
+            <div className="flex justify-between items-center text-sm">
+              <div>
+                <div className="text-gray-600">Start Date</div>
+                <div className="font-semibold text-gray-800">
+                  {formatDate(plan.startDate)}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-600">End Date</div>
+                <div className="font-semibold text-gray-800">
+                  {formatDate(plan.endDate)}
+                </div>
+              </div>
+            </div>
+
+            {/* Validity & Usage Combined */}
+            <div className="space-y-3">
+              {/* Days Remaining */}
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Days Remaining</span>
+                <div className={`font-semibold ${daysRemaining < 7 ? "text-red-600" : "text-gray-800"}`}>
+                  {daysRemaining} days
+                </div>
+              </div>
+
+              {/* Usage */}
+              <div>
+                <div className="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>User Allocation</span>
+                  <span className="font-semibold">
+                    {planUsers.length} / {plan.userLimit}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-1000 ${
+                      usagePercentage < 70
+                        ? "bg-green-500"
+                        : usagePercentage < 90
+                        ? "bg-yellow-500"
+                        : "bg-red-500"
+                    }`}
+                    style={{ width: `${Math.min(usagePercentage, 100)}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Upcoming Plan - Only shows if exists */}
+            {hasUpcomingPlan && (
+              <div className={`bg-gradient-to-r ${nextInQueue.theme?.light} rounded-xl p-3 border ${nextInQueue.theme?.border}`}>
+                <div className="flex justify-between items-center">
+                  <div className="flex-1">
+                    <div className="text-xs text-gray-600 mb-1">Upcoming Plan</div>
+                    <div className="font-semibold text-gray-800 text-sm">
+                      {nextInQueue.planName} • {nextInQueue.billingCycle}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                  <button
+                    onClick={() => setConfirmModal({
+                      isOpen: true,
+                      productType: plan.productType,
+                      planName: nextInQueue.planName,
+                      billingCycle: nextInQueue.billingCycle
+                    })}
+                    disabled={jumpLoading[plan.productType]}
+                    className={`px-3 py-1 rounded-lg font-semibold text-xs ${
+                      jumpLoading[plan.productType]
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-red-600 text-white hover:bg-red-700"
+                    }`}
+                  >
+                    {jumpLoading[plan.productType] ? "Activating..." : "Activate"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Add User Button - Always at bottom */}
+          <button
+            onClick={() => startAddUser(plan)}
+            disabled={!canAddMoreUsers(plan) || loading}
+            className={`w-full py-3 rounded-xl font-semibold transition-all mt-auto ${
+              !canAddMoreUsers(plan) || loading
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl"
+            }`}
+          >
+            {!canAddMoreUsers(plan)
+              ? "User Limit Reached"
+              : `Add User to ${plan.productType}`}
+          </button>
+        </div>
+      </div>
+    );
+  })}
+</div>
           </div>
 
           {/* User Summary - Now takes full width below plans */}
