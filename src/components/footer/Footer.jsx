@@ -349,7 +349,7 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
           >
             <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
               <p className="text-gray-400 text-base text-center lg:text-left font-light">
-                © {new Date().getFullYear()} <span className="text-white font-semibold">RapptorSoft Technologies</span>. 
+                © {new Date().getFullYear()} <span className="text-white font-semibold">Rapptorsoft Technologies</span>. 
                 All rights reserved. Crafting the future of shipping technology.
               </p>
               
