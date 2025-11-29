@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaUser, FaPhone, FaEnvelope, FaGraduationCap, FaBriefcase, FaFileUpload, FaCheck } from 'react-icons/fa';
 import FormLoader from '../FormLoader';
+import RecaptchaComponent from '../ReCaptchaComponent';
 
 const CareerForm = ({ job, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -12,15 +13,26 @@ const CareerForm = ({ job, onSubmit, onClose }) => {
     otherEducationSpecification: '',  
     positionApplied: job.title,       
     jobId: job.id,                    
+    recaptchaToken: ''
   });
 
   const [resume, setResume] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOtherEducation, setShowOtherEducation] = useState(false);
+  const [recaptchaError, setRecaptchaError] = useState(''); 
   
   // Simple popup state
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+
+  // ✅ ADD RECAPTCHA VERIFICATION HANDLER
+  const handleRecaptchaVerify = (token) => {
+    setFormData(prev => ({
+      ...prev,
+      recaptchaToken: token
+    }));
+    setRecaptchaError('');
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,6 +63,13 @@ const CareerForm = ({ job, onSubmit, onClose }) => {
 
  const handleSubmit = async (e) => {
   e.preventDefault();
+  
+ 
+  if (!formData.recaptchaToken) {
+    setRecaptchaError('Please complete the security verification');
+    return;
+  }
+
   setIsSubmitting(true);
 
   try {
@@ -63,7 +82,8 @@ const CareerForm = ({ job, onSubmit, onClose }) => {
       applicantEmail: formData.applicantEmail,
       education: formData.education,
       otherEducationSpecification: formData.otherEducationSpecification,
-      positionApplied: job.title
+      positionApplied: job.title,
+      recaptchaToken: formData.recaptchaToken // ✅ INCLUDE RECAPTCHA TOKEN
     })], { type: 'application/json' }));
 
     if (resume) {
@@ -290,6 +310,28 @@ return (
                   <p className="text-xs text-gray-500">PDF or Word documents only</p>
                 </div>
 
+                {/* 🔐 RECAPTCHA COMPONENT */}
+                <div className="border-t border-gray-200 pt-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    Security Verification *
+                  </label>
+                  <RecaptchaComponent 
+                    onVerify={handleRecaptchaVerify}
+                    className="mb-2"
+                  />
+                  
+                  {/* Recaptcha Error Message */}
+                  {recaptchaError && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="text-red-600 text-sm font-medium mt-2 p-2 bg-red-50 border border-red-200 rounded-lg"
+                    >
+                      {recaptchaError}
+                    </motion.div>
+                  )}
+                </div>
+
                 {/* Submit Buttons */}
                 <div className="flex gap-3 pt-4">
                   <button
@@ -302,7 +344,7 @@ return (
                   </button>
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !formData.recaptchaToken} // ✅ DISABLE IF NO RECAPTCHA
                     className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
@@ -322,7 +364,7 @@ return (
       )}
     </AnimatePresence>
 
-    {/* Success/Error Popup - Only show when popup is visible */}
+    {/* Success/Error Popup */}
     <AnimatePresence>
       {showPopup && (
         <motion.div

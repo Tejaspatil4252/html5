@@ -16,19 +16,32 @@ const PlanDashboard = ({ selectedBranch, user }) => {
   });
   const [loading, setLoading] = useState(false);
   const [activePlans, setActivePlans] = useState([]);
-  const [queuedPlans, setQueuedPlans] = useState({
-    EYMS: [],
-    BWMS: [],
-  });
+  const [queuedPlans, setQueuedPlans] = useState({});
   const [jumpLoading, setJumpLoading] = useState({});
   const [pricingData, setPricingData] = useState(null);
+  const [availableProducts, setAvailableProducts] = useState([]);
 
   const [confirmModal, setConfirmModal] = useState({
-  isOpen: false,
-  productType: null,
-  planName: null,
-  billingCycle: null
-});
+    isOpen: false,
+    productId: null,
+    planName: null,
+    billingCycle: null,
+  });
+
+  // ✅ DYNAMIC: Fetch available products from pricing data
+  useEffect(() => {
+    if (pricingData) {
+      const products = Object.keys(pricingData);
+      setAvailableProducts(products);
+
+      // Initialize queued plans structure dynamically
+      const initialQueuedPlans = {};
+      products.forEach((product) => {
+        initialQueuedPlans[product] = [];
+      });
+      setQueuedPlans(initialQueuedPlans);
+    }
+  }, [pricingData]);
 
   // Fetch data
   useEffect(() => {
@@ -106,19 +119,19 @@ const PlanDashboard = ({ selectedBranch, user }) => {
     }
   };
 
-  // Enrich active plans with pricing data
+  // ✅ DYNAMIC: Enrich active plans with product info
   const getEnrichedActivePlans = () => {
     if (!pricingData || !activePlans.length || !selectedBranch) return [];
 
     return activePlans.map((plan) => {
-      const planId =
-        plan.productType === "EYMS"
-          ? selectedBranch.eymsPlanId
-          : selectedBranch.bwmsPlanId;
+      // Get product name from pricing data
+      const productName = plan.productId?.replace("1", "") || plan.productId;
+      const productData = pricingData[productName];
 
-      if (!planId) {
+      if (!plan.planId) {
         return {
           ...plan,
+          productName: productName,
           planName: "No Active Plan",
           userLimit: 0,
           features: [],
@@ -127,12 +140,13 @@ const PlanDashboard = ({ selectedBranch, user }) => {
       }
 
       let planDetails = null;
-      const productData = pricingData[plan.productType];
 
       if (productData) {
         ["monthly", "quarterly", "yearly"].forEach((cycle) => {
           if (productData[cycle]) {
-            const found = productData[cycle].find((p) => p.planId === planId);
+            const found = productData[cycle].find(
+              (p) => p.planId === plan.planId
+            );
             if (found) planDetails = found;
           }
         });
@@ -140,13 +154,13 @@ const PlanDashboard = ({ selectedBranch, user }) => {
 
       const userLimit = planDetails
         ? extractUserLimitFromFeatures(planDetails.features || [])
-        : 0;
+        : plan.userLimit || 0;
       const planName = planDetails?.plan || "Plan Not Found";
       const price = planDetails?.discountedPrice || 0;
 
       return {
         ...plan,
-        planId: planId,
+        productName: productName,
         planName: planName,
         userLimit: userLimit,
         features: planDetails?.features || [],
@@ -166,16 +180,13 @@ const PlanDashboard = ({ selectedBranch, user }) => {
     return 0;
   };
 
-  const getUsersForPlan = (planId, product) => {
-    return users.filter((user) => {
-      if (product === "EYMS") return user.eymsPlanId !== null;
-      if (product === "BWMS") return user.bwmsPlanId !== null;
-      return false;
-    });
+  // ✅ DYNAMIC: Get users for plan based on assignedPlanId
+  const getUsersForPlan = (planId, productId) => {
+    return users.filter((user) => user.assignedPlanId === planId);
   };
 
   const canAddMoreUsers = (plan) => {
-    const planUsers = getUsersForPlan(plan.planId, plan.productType);
+    const planUsers = getUsersForPlan(plan.planId, plan.productId);
     return planUsers.length < plan.userLimit;
   };
 
@@ -221,93 +232,103 @@ const PlanDashboard = ({ selectedBranch, user }) => {
     }
   };
 
-const fetchQueuedPlans = async () => {
-  try {
-    const token = localStorage.getItem('authToken');
-    
-    const [eymsResponse, bwmsResponse] = await Promise.all([
-      fetch(`http://localhost:8080/api/subscriptions/queue?branchId=${selectedBranch.branchId}&productType=EYMS`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }),
-      fetch(`http://localhost:8080/api/subscriptions/queue?branchId=${selectedBranch.branchId}&productType=BWMS`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-    ]);
+  // ✅ DYNAMIC: Fetch queued plans for all available products
+  const fetchQueuedPlans = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
 
-    const eymsData = eymsResponse.ok ? await eymsResponse.json() : { queueItems: [] };
-    const bwmsData = bwmsResponse.ok ? await bwmsResponse.json() : { queueItems: [] };
+      if (!availableProducts.length) return;
 
-    const enrichedEymsQueue = enrichQueueWithPlanDetails(eymsData.queueItems || [], 'EYMS');
-    const enrichedBwmsQueue = enrichQueueWithPlanDetails(bwmsData.queueItems || [], 'BWMS');
+      // Fetch queue for each available product
+      const queuePromises = availableProducts.map((product) =>
+        fetch(
+          `http://localhost:8080/api/subscriptions/queue?branchId=${selectedBranch.branchId}&productId=${product}1`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        ).then((response) =>
+          response.ok ? response.json() : { queueItems: [] }
+        )
+      );
 
-    setQueuedPlans({
-      EYMS: enrichedEymsQueue,
-      BWMS: enrichedBwmsQueue
-    });
+      const queueResults = await Promise.all(queuePromises);
 
-  } catch (error) {
-    console.error('Failed to fetch queued plans:', error);
-  }
-};
-
-const enrichQueueWithPlanDetails = (queueItems, productType) => {
-  if (!pricingData || !queueItems.length) return queueItems;
-
-  return queueItems.map((queueItem) => {
-    const productData = pricingData[productType];
-    let planName = queueItem.planName;
-    let billingCycle = "monthly";
-    let features = [];
-    let price = 0;
-
-    ["monthly", "quarterly", "yearly"].forEach((cycle) => {
-      if (productData && productData[cycle]) {
-        const foundPlan = productData[cycle].find(
-          (p) => p.planId === queueItem.planId
+      // Update queued plans state dynamically
+      const updatedQueuedPlans = {};
+      availableProducts.forEach((product, index) => {
+        updatedQueuedPlans[product] = enrichQueueWithPlanDetails(
+          queueResults[index].queueItems || [],
+          product
         );
-        if (foundPlan) {
-          planName = foundPlan.plan;
-          billingCycle = cycle;
-          features = foundPlan.features || [];
-          price = foundPlan.discountedPrice || 0;
+      });
+
+      setQueuedPlans(updatedQueuedPlans);
+    } catch (error) {
+      console.error("Failed to fetch queued plans:", error);
+    }
+  };
+
+  // ✅ DYNAMIC: Enrich queue with plan details
+  const enrichQueueWithPlanDetails = (queueItems, productName) => {
+    if (!pricingData || !queueItems.length) return queueItems;
+
+    const productData = pricingData[productName];
+
+    return queueItems.map((queueItem) => {
+      let planName = queueItem.planName;
+      let billingCycle = "monthly";
+      let features = [];
+      let price = 0;
+
+      ["monthly", "quarterly", "yearly"].forEach((cycle) => {
+        if (productData && productData[cycle]) {
+          const foundPlan = productData[cycle].find(
+            (p) => p.planId === queueItem.planId
+          );
+          if (foundPlan) {
+            planName = foundPlan.plan;
+            billingCycle = cycle;
+            features = foundPlan.features || [];
+            price = foundPlan.discountedPrice || 0;
+          }
         }
-      }
+      });
+
+      const userLimit = extractUserLimitFromFeatures(features);
+
+      return {
+        ...queueItem,
+        productName: productName,
+        planName: planName,
+        billingCycle: billingCycle,
+        userLimit: userLimit,
+        price: price,
+        features: features,
+        theme: getPlanTheme(planName),
+        fullPlanName: `${planName} (${billingCycle})`,
+      };
     });
+  };
 
-    const userLimit = extractUserLimitFromFeatures(features);
+  // Fixed data loading order
+  useEffect(() => {
+    if (selectedBranch) {
+      const fetchAllData = async () => {
+        await fetchPricingData();
+        // fetchQueuedPlans will be called via pricingData useEffect
+        fetchActivePlans();
+        fetchUsers();
+      };
 
-    return {
-      ...queueItem,
-      planName: planName,
-      billingCycle: billingCycle,
-      userLimit: userLimit,
-      price: price,
-      features: features,
-      theme: getPlanTheme(planName),
-      fullPlanName: `${planName} (${billingCycle})`,
-    };
-  });
-};
+      fetchAllData();
+    }
+  }, [selectedBranch]);
 
-// Fixed data loading order
-useEffect(() => {
-  if (selectedBranch) {
-    const fetchAllData = async () => {
-      await fetchPricingData();
+  useEffect(() => {
+    if (pricingData && selectedBranch && availableProducts.length > 0) {
       fetchQueuedPlans();
-      fetchActivePlans();
-      fetchUsers();
-    };
-    
-    fetchAllData();
-  }
-}, [selectedBranch]);
-
-useEffect(() => {
-  if (pricingData && selectedBranch) {
-    fetchQueuedPlans();
-  }
-}, [pricingData, selectedBranch]);
+    }
+  }, [pricingData, selectedBranch, availableProducts]);
 
   const fetchUsers = async () => {
     try {
@@ -329,56 +350,46 @@ useEffect(() => {
     }
   };
 
-const handleJumpToNextPlan = async (productType) => {
-  try {
-    setJumpLoading(prev => ({ ...prev, [productType]: true }));
-    const token = localStorage.getItem('authToken');
-    
-    const response = await fetch(
-      `http://localhost:8080/api/subscriptions/jump?branchId=${selectedBranch.branchId}&productType=${productType}`,
-      { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } }
-    );
+  // ✅ DYNAMIC: Handle jump to next plan with correct productId
+  const handleJumpToNextPlan = async (productId) => {
+    console.log("🔄 Jump called with productId:", productId);
+    try {
+      setJumpLoading((prev) => ({ ...prev, [productId]: true }));
+      const token = localStorage.getItem("authToken");
 
-    if (response.ok) {
-      toast.success(`Successfully activated next plan for ${productType}`);
-      window.location.reload();
-  
-    } else {
-      const errorText = await response.text();
-      toast.error(errorText || 'Failed to activate next plan');
+      const response = await fetch(
+        `http://localhost:8080/api/subscriptions/jump?branchId=${selectedBranch.branchId}&productId=${productId}`,
+        { method: "POST", headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.ok) {
+        toast.success(`Successfully activated next plan`);
+        window.location.reload();
+      } else {
+        const errorText = await response.text();
+        toast.error(errorText || "Failed to activate next plan");
+      }
+    } catch (error) {
+      console.error("Jump error:", error);
+      toast.error("Failed to activate next plan");
+    } finally {
+      setJumpLoading((prev) => ({ ...prev, [productId]: false }));
     }
-  } catch (error) {
-    console.error('Jump error:', error);
-    toast.error('Failed to activate next plan');
-  } finally {
-    setJumpLoading(prev => ({ ...prev, [productType]: false }));
-  }
-};
+  };
 
-// Add this function to your component
-const fetchAllData = async () => {
-  try {
-    await Promise.all([
-      fetchPricingData(),
-      fetchQueuedPlans(),
-      fetchActivePlans(),
-      fetchUsers()
-    ]);
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-  }
-};
+  
 
 const handleAddUser = async () => {
-  if (
-    !newUser.username ||
-    !newUser.password ||
-    !newUser.email ||
-    !newUser.mobileNo
-  ) {
-    toast.error("Please fill all fields");
+  // ✅ COMPREHENSIVE VALIDATION
+  const validationErrors = validateUserForm(newUser);
+  
+  if (Object.keys(validationErrors).length > 0) {
+    // Show the first validation error
+    const firstError = Object.values(validationErrors)[0];
+    toast.error(firstError);
     return;
   }
+  
   if (!selectedPlanForAdd) {
     toast.error("Please select a plan first");
     return;
@@ -387,14 +398,6 @@ const handleAddUser = async () => {
   try {
     setLoading(true);
     const token = localStorage.getItem("authToken");
-    const eymsPlanId =
-      selectedPlanForAdd.productType === "EYMS"
-        ? selectedPlanForAdd.planId
-        : null;
-    const bwmsPlanId =
-      selectedPlanForAdd.productType === "BWMS"
-        ? selectedPlanForAdd.planId
-        : null;
 
     const response = await fetch(
       `http://localhost:8080/api/branch-users/branches/${selectedBranch.branchId}`,
@@ -406,12 +409,11 @@ const handleAddUser = async () => {
         },
         body: JSON.stringify({
           companyId: selectedBranch.companyId,
-          userName: newUser.username,
-          email: newUser.email,
-          mobileNo: newUser.mobileNo,
+          userName: newUser.username.trim(),
+          email: newUser.email.trim(),
+          mobileNo: newUser.mobileNo.trim(),
           password: newUser.password,
-          eymsPlanId,
-          bwmsPlanId,
+          assignedPlanId: selectedPlanForAdd.planId,
           createdBy: user?.userId || "admin",
         }),
       }
@@ -425,7 +427,6 @@ const handleAddUser = async () => {
       setShowAddForm(false);
       fetchUsers();
     } else {
-      // ✅ FIX: Show backend error message
       toast.error(data.message || "Failed to create user");
     }
   } catch (error) {
@@ -435,13 +436,49 @@ const handleAddUser = async () => {
   }
 };
 
+// ✅ ADD THIS VALIDATION FUNCTION
+const validateUserForm = (userData) => {
+  const errors = {};
+  
+  // Username validation
+  if (!userData.username?.trim()) {
+    errors.username = "Username is required";
+  } else if (userData.username.trim().length < 2) {
+    errors.username = "Username must be at least 2 characters";
+  }
+  
+  // Email validation
+  if (!userData.email?.trim()) {
+    errors.email = "Email is required";
+  } else if (!userData.email.match(/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
+    errors.email = "Please enter a valid email address";
+  }
+  
+  // Mobile validation
+  if (!userData.mobileNo?.trim()) {
+    errors.mobileNo = "Mobile number is required";
+  } else if (!userData.mobileNo.match(/^\d{10}$/)) {
+    errors.mobileNo = "Mobile number must be exactly 10 digits";
+  }
+  
+  // Password validation
+  if (!userData.password?.trim()) {
+    errors.password = "Password is required";
+  } else if (userData.password.length < 6) {
+    errors.password = "Password must be at least 6 characters";
+  }
+  
+  return errors;
+};
+
 const handleUpdateUser = async () => {
-  if (
-    !editingUser?.userName ||
-    !editingUser?.email ||
-    !editingUser?.mobileNo
-  ) {
-    toast.error("Please fill all fields");
+  // ✅ COMPREHENSIVE VALIDATION
+  const validationErrors = validateUpdateUserForm(editingUser);
+  
+  if (Object.keys(validationErrors).length > 0) {
+    // Show the first validation error
+    const firstError = Object.values(validationErrors)[0];
+    toast.error(firstError);
     return;
   }
 
@@ -458,9 +495,9 @@ const handleUpdateUser = async () => {
         },
         body: JSON.stringify({
           companyId: selectedBranch.companyId,
-          userName: editingUser.userName,
-          email: editingUser.email,
-          mobileNo: editingUser.mobileNo,
+          userName: editingUser.userName.trim(),
+          email: editingUser.email.trim(),
+          mobileNo: editingUser.mobileNo.trim(),
           newPassword: editingUser.newPassword || "",
           editedBy: user?.userId || "admin",
         }),
@@ -474,7 +511,6 @@ const handleUpdateUser = async () => {
       setShowUpdateForm(false);
       fetchUsers();
     } else {
-      // ✅ ADD THIS: Show backend error message
       toast.error(data.message || "Failed to update user");
     }
   } catch (error) {
@@ -482,6 +518,39 @@ const handleUpdateUser = async () => {
   } finally {
     setLoading(false);
   }
+};
+
+// ✅ ADD THIS VALIDATION FUNCTION FOR UPDATE
+const validateUpdateUserForm = (userData) => {
+  const errors = {};
+  
+  // Username validation
+  if (!userData.userName?.trim()) {
+    errors.userName = "Username is required";
+  } else if (userData.userName.trim().length < 2) {
+    errors.userName = "Username must be at least 2 characters";
+  }
+  
+  // Email validation
+  if (!userData.email?.trim()) {
+    errors.email = "Email is required";
+  } else if (!userData.email.match(/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
+    errors.email = "Please enter a valid email address";
+  }
+  
+  // Mobile validation
+  if (!userData.mobileNo?.trim()) {
+    errors.mobileNo = "Mobile number is required";
+  } else if (!userData.mobileNo.match(/^\d{10}$/)) {
+    errors.mobileNo = "Mobile number must be exactly 10 digits";
+  }
+  
+  // Password validation (optional but must be strong if provided)
+  if (userData.newPassword && userData.newPassword.length < 6) {
+    errors.newPassword = "Password must be at least 6 characters";
+  }
+  
+  return errors;
 };
 
   const handleConfirmDelete = async () => {
@@ -524,8 +593,23 @@ const handleUpdateUser = async () => {
   if (!selectedBranch) return null;
 
   const enrichedActivePlans = getEnrichedActivePlans();
-  const eymsUsers = users.filter((user) => user.eymsPlanId).length;
-  const bwmsUsers = users.filter((user) => user.bwmsPlanId).length;
+
+  // ✅ DYNAMIC: Calculate users per product
+  const getUsersPerProduct = () => {
+    const usersPerProduct = {};
+    availableProducts.forEach((product) => {
+      usersPerProduct[product] = users.filter((user) => {
+        if (!user.assignedPlanId) return false;
+        // Check if user's assigned plan belongs to this product
+        // Check if user's assigned plan belongs to this product
+        const userProduct = user.assignedPlanId.replace(/\d+$/, ""); // Remove numbers from end
+        return userProduct === product.replace("1", "");
+      }).length;
+    });
+    return usersPerProduct;
+  };
+
+  const usersPerProduct = getUsersPerProduct();
 
   if (enrichedActivePlans.length === 0) {
     return (
@@ -550,6 +634,7 @@ const handleUpdateUser = async () => {
     );
   }
 
+  // Queue Plan Card Component
   const QueuePlanCard = ({ queuedPlan }) => (
     <div
       className={`bg-white rounded-2xl p-6 border ${queuedPlan.theme?.border} shadow-sm`}
@@ -563,7 +648,7 @@ const handleUpdateUser = async () => {
               Position #{queuedPlan.position}
             </span>
             <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-              {queuedPlan.planDetails?.billingCycle || "Unknown Cycle"}
+              {queuedPlan.billingCycle}
             </span>
           </div>
 
@@ -618,152 +703,177 @@ const handleUpdateUser = async () => {
               </div>
             </div>
 
-{/* ✅ OPTIMIZED: Full width for single plan, grid for multiple plans */}
-<div className={`grid ${enrichedActivePlans.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 'grid-cols-1 lg:grid-cols-2'} gap-6`}>
-  {enrichedActivePlans.map((plan) => {
-    const planUsers = getUsersForPlan(plan.planId, plan.productType);
-    const usagePercentage = (planUsers.length / plan.userLimit) * 100;
-    const daysRemaining = getDaysRemaining(plan.endDate);
-    const nextInQueue = queuedPlans[plan.productType]?.[0];
-    const hasUpcomingPlan = !!nextInQueue;
+            <div
+              className={`grid ${
+                enrichedActivePlans.length === 1
+                  ? "grid-cols-1 max-w-2xl mx-auto"
+                  : "grid-cols-1 lg:grid-cols-2"
+              } gap-6`}
+            >
+              {enrichedActivePlans.map((plan) => {
+                const planUsers = getUsersForPlan(plan.planId, plan.productId);
+                const usagePercentage =
+                  (planUsers.length / plan.userLimit) * 100;
+                const daysRemaining = getDaysRemaining(plan.endDate);
+                const nextInQueue = queuedPlans[plan.productName]?.[0];
+                const hasUpcomingPlan = !!nextInQueue;
 
-    return (
-      <div
-        key={plan.subscriptionId}
-        className={`bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
-          enrichedActivePlans.length === 1 ? 'max-w-2xl' : ''
-        }`}
-      >
-        {/* Plan Header with Dynamic Colors */}
-        <div className={`bg-gradient-to-r ${plan.theme?.gradient} p-6 text-white`}>
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="text-xl font-bold mb-2">
-                {plan.productType} {plan.planName}
-              </h4>
-              <div className="flex items-center gap-3">
-                <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
-                  {formatPrice(plan.price)}
-                </span>
-                <span className="text-white/80 text-sm">
-                  {plan.plan?.billingCycle}
-                </span>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-              <span className="text-lg">
-                {plan.productType === "EYMS" ? "💼" : "🚀"}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Plan Details - Flex column to push content properly */}
-        <div className="p-6 space-y-4 flex-1 flex flex-col">
-          {/* Plan Info Section */}
-          <div className="space-y-4 flex-1">
-            {/* Dates - Compact Layout */}
-            <div className="flex justify-between items-center text-sm">
-              <div>
-                <div className="text-gray-600">Start Date</div>
-                <div className="font-semibold text-gray-800">
-                  {formatDate(plan.startDate)}
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-gray-600">End Date</div>
-                <div className="font-semibold text-gray-800">
-                  {formatDate(plan.endDate)}
-                </div>
-              </div>
-            </div>
-
-            {/* Validity & Usage Combined */}
-            <div className="space-y-3">
-              {/* Days Remaining */}
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Days Remaining</span>
-                <div className={`font-semibold ${daysRemaining < 7 ? "text-red-600" : "text-gray-800"}`}>
-                  {daysRemaining} days
-                </div>
-              </div>
-
-              {/* Usage */}
-              <div>
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>User Allocation</span>
-                  <span className="font-semibold">
-                    {planUsers.length} / {plan.userLimit}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                return (
                   <div
-                    className={`h-2 rounded-full transition-all duration-1000 ${
-                      usagePercentage < 70
-                        ? "bg-green-500"
-                        : usagePercentage < 90
-                        ? "bg-yellow-500"
-                        : "bg-red-500"
-                    }`}
-                    style={{ width: `${Math.min(usagePercentage, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Upcoming Plan - Only shows if exists */}
-            {hasUpcomingPlan && (
-              <div className={`bg-gradient-to-r ${nextInQueue.theme?.light} rounded-xl p-3 border ${nextInQueue.theme?.border}`}>
-                <div className="flex justify-between items-center">
-                  <div className="flex-1">
-                    <div className="text-xs text-gray-600 mb-1">Upcoming Plan</div>
-                    <div className="font-semibold text-gray-800 text-sm">
-                      {nextInQueue.planName} • {nextInQueue.billingCycle}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setConfirmModal({
-                      isOpen: true,
-                      productType: plan.productType,
-                      planName: nextInQueue.planName,
-                      billingCycle: nextInQueue.billingCycle
-                    })}
-                    disabled={jumpLoading[plan.productType]}
-                    className={`px-3 py-1 rounded-lg font-semibold text-xs ${
-                      jumpLoading[plan.productType]
-                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                        : "bg-red-600 text-white hover:bg-red-700"
+                    key={plan.subscriptionId}
+                    className={`bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
+                      enrichedActivePlans.length === 1 ? "max-w-2xl" : ""
                     }`}
                   >
-                    {jumpLoading[plan.productType] ? "Activating..." : "Activate"}
-                  </button>
-                </div>
-              </div>
-            )}
+                    {/* Plan Header with Dynamic Colors */}
+                    <div
+                      className={`bg-gradient-to-r ${plan.theme?.gradient} p-6 text-white`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="text-xl font-bold mb-2">
+                            {plan.productName} {plan.planName}
+                          </h4>
+                          <div className="flex items-center gap-3">
+                            <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
+                              {formatPrice(plan.price)}
+                            </span>
+                            <span className="text-white/80 text-sm">
+                              {plan.billingCycle}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                          <span className="text-lg">
+                            {plan.productName === "EYMS" ? "💼" : "🚀"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Plan Details */}
+                    <div className="p-6 space-y-4 flex-1 flex flex-col">
+                      <div className="space-y-4 flex-1">
+                        {/* Dates */}
+                        <div className="flex justify-between items-center text-sm">
+                          <div>
+                            <div className="text-gray-600">Start Date</div>
+                            <div className="font-semibold text-gray-800">
+                              {formatDate(plan.startDate)}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-gray-600">End Date</div>
+                            <div className="font-semibold text-gray-800">
+                              {formatDate(plan.endDate)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Validity & Usage */}
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">
+                              Days Remaining
+                            </span>
+                            <div
+                              className={`font-semibold ${
+                                daysRemaining < 7
+                                  ? "text-red-600"
+                                  : "text-gray-800"
+                              }`}
+                            >
+                              {daysRemaining} days
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="flex justify-between text-sm text-gray-600 mb-2">
+                              <span>User Allocation</span>
+                              <span className="font-semibold">
+                                {planUsers.length} / {plan.userLimit}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full transition-all duration-1000 ${
+                                  usagePercentage < 70
+                                    ? "bg-green-500"
+                                    : usagePercentage < 90
+                                    ? "bg-yellow-500"
+                                    : "bg-red-500"
+                                }`}
+                                style={{
+                                  width: `${Math.min(usagePercentage, 100)}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Upcoming Plan */}
+                        {hasUpcomingPlan && (
+                          <div
+                            className={`bg-gradient-to-r ${nextInQueue.theme?.light} rounded-xl p-3 border ${nextInQueue.theme?.border}`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <div className="flex-1">
+                                <div className="text-xs text-gray-600 mb-1">
+                                  Upcoming Plan
+                                </div>
+                                <div className="font-semibold text-gray-800 text-sm">
+                                  {nextInQueue.planName} •{" "}
+                                  {nextInQueue.billingCycle}
+                                </div>
+                              </div>
+                              <button
+                                onClick={() =>
+                                  setConfirmModal({
+                                    isOpen: true,
+                                    productId: plan.productId,
+                                    planName: nextInQueue.planName,
+                                    billingCycle: nextInQueue.billingCycle,
+                                  })
+                                }
+                                disabled={jumpLoading[plan.productId]} // ← FIXED
+                                className={`px-3 py-1 rounded-lg font-semibold text-xs ${
+                                  jumpLoading[plan.productId] // ← FIXED
+                                    ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                                    : "bg-red-600 text-white hover:bg-red-700"
+                                }`}
+                              >
+                                {jumpLoading[plan.productId]
+                                  ? "Activating..."
+                                  : "Activate"}{" "}
+                                {/* ← FIXED */}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Add User Button */}
+                      <button
+                        onClick={() => startAddUser(plan)}
+                        disabled={!canAddMoreUsers(plan) || loading}
+                        className={`w-full py-3 rounded-xl font-semibold transition-all mt-auto ${
+                          !canAddMoreUsers(plan) || loading
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl"
+                        }`}
+                      >
+                        {!canAddMoreUsers(plan)
+                          ? "User Limit Reached"
+                          : `Add User to ${plan.productName}`}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Add User Button - Always at bottom */}
-          <button
-            onClick={() => startAddUser(plan)}
-            disabled={!canAddMoreUsers(plan) || loading}
-            className={`w-full py-3 rounded-xl font-semibold transition-all mt-auto ${
-              !canAddMoreUsers(plan) || loading
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl"
-            }`}
-          >
-            {!canAddMoreUsers(plan)
-              ? "User Limit Reached"
-              : `Add User to ${plan.productType}`}
-          </button>
-        </div>
-      </div>
-    );
-  })}
-</div>
-          </div>
-
-          {/* User Summary - Now takes full width below plans */}
+          {/* DYNAMIC: User Summary */}
           <div className="xl:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -771,18 +881,19 @@ const handleUpdateUser = async () => {
                 User Summary
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-3xl font-bold text-blue-600">
-                    {eymsUsers}
+                {availableProducts.map((product) => (
+                  <div
+                    key={product}
+                    className="text-center p-6 bg-blue-50 rounded-xl border border-blue-200"
+                  >
+                    <div className="text-3xl font-bold text-blue-600">
+                      {usersPerProduct[product] || 0}
+                    </div>
+                    <div className="text-sm text-blue-800 mt-2">
+                      {product} Users
+                    </div>
                   </div>
-                  <div className="text-sm text-blue-800 mt-2">EYMS Users</div>
-                </div>
-                <div className="text-center p-6 bg-green-50 rounded-xl border border-green-200">
-                  <div className="text-3xl font-bold text-green-600">
-                    {bwmsUsers}
-                  </div>
-                  <div className="text-sm text-green-800 mt-2">BWMS Users</div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -809,8 +920,12 @@ const handleUpdateUser = async () => {
           ) : (
             <div className="space-y-3">
               {users.map((user) => {
-                const hasEyms = user.eymsPlanId !== null;
-                const hasBwms = user.bwmsPlanId !== null;
+                const userPlan = activePlans.find(
+                  (plan) => plan.planId === user.assignedPlanId
+                );
+                const productName = userPlan
+                  ? userPlan.productId?.replace("1", "")
+                  : "";
 
                 return (
                   <div
@@ -822,23 +937,14 @@ const handleUpdateUser = async () => {
                         <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center text-white font-bold">
                           {user.userName?.charAt(0)?.toUpperCase() || "U"}
                         </div>
-                        {/* Plan Badges */}
-                        {(hasEyms || hasBwms) && (
-                          <div className="absolute -bottom-1 -right-1 flex gap-1">
-                            {hasEyms && (
-                              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
-                                <span className="text-[8px] text-white font-bold">
-                                  E
-                                </span>
-                              </div>
-                            )}
-                            {hasBwms && (
-                              <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                <span className="text-[8px] text-white font-bold">
-                                  B
-                                </span>
-                              </div>
-                            )}
+                        {/* Plan Badge */}
+                        {user.assignedPlanId && (
+                          <div className="absolute -bottom-1 -right-1">
+                            <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+                              <span className="text-[8px] text-white font-bold">
+                                {productName?.charAt(0) || "P"}
+                              </span>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -847,19 +953,12 @@ const handleUpdateUser = async () => {
                           <div className="font-medium text-gray-800">
                             {user.userName}
                           </div>
-                          {/* Plan Text Badges */}
-                          <div className="flex gap-1">
-                            {hasEyms && (
-                              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                                EYMS
-                              </span>
-                            )}
-                            {hasBwms && (
-                              <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                                BWMS
-                              </span>
-                            )}
-                          </div>
+                          {/* Plan Text Badge */}
+                          {user.assignedPlanId && productName && (
+                            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                              {productName}
+                            </span>
+                          )}
                         </div>
                         <div className="text-sm text-gray-600">
                           {user.email}
@@ -1045,10 +1144,11 @@ const handleUpdateUser = async () => {
           <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/50">
             <div className="bg-white rounded-2xl p-6 max-w-md w-full text-center">
               <h3 className="text-xl font-bold mb-2">Delete User</h3>
-              <p className="text-gray-600 mb-4">
-                Are you sure you want to delete{" "}
-                <strong>{deleteModal.user?.userName}</strong>?
-              </p>
+         <p className="text-gray-600 mb-4">
+    ⚠️ This action cannot be undone! Are you sure you want to 
+    <strong> permanently delete</strong> {" "}
+    <strong>{deleteModal.user?.userName}</strong>?
+</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteModal({ isOpen: false, user: null })}
@@ -1067,44 +1167,64 @@ const handleUpdateUser = async () => {
           </div>
         )}
         {/* Confirmation Modal */}
-{confirmModal.isOpen && (
-  <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/50">
-    <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-      <div className="text-center mb-6">
-        <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <span className="text-2xl">⚠️</span>
-        </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-2">
-          Confirm Plan Activation
-        </h3>
-        <p className="text-gray-600">
-          Are you sure you want to activate <strong>{confirmModal.planName} ({confirmModal.billingCycle})</strong>?
-        </p>
-        <p className="text-sm text-gray-500 mt-2">
-          This will replace your current {confirmModal.productType} plan.
-        </p>
-      </div>
-      
-      <div className="flex gap-3">
-        <button
-          onClick={() => setConfirmModal({ isOpen: false, productType: null, planName: null, billingCycle: null })}
-          className="flex-1 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-all font-semibold"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={() => {
-            handleJumpToNextPlan(confirmModal.productType);
-            setConfirmModal({ isOpen: false, productType: null, planName: null, billingCycle: null });
-          }}
-          className="flex-1 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-semibold"
-        >
-          Confirm Activation
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        {confirmModal.isOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/50">
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">⚠️</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Confirm Plan Activation
+                </h3>
+                <p className="text-gray-600">
+                  Are you sure you want to activate{" "}
+                  <strong>
+                    {confirmModal.planName} ({confirmModal.billingCycle})
+                  </strong>
+                  ?
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  This will replace your current{" "}
+                  {confirmModal.productId?.replace("1", "")} plan.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                {/* Cancel Button */}
+                <button
+                  onClick={() =>
+                    setConfirmModal({
+                      isOpen: false,
+                      productId: null,
+                      planName: null,
+                      billingCycle: null,
+                    })
+                  }
+                  className="flex-1 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-all font-semibold"
+                >
+                  Cancel
+                </button>
+
+                {/* Confirm Button - ONLY THIS ONE */}
+                <button
+                  onClick={() => {
+                    handleJumpToNextPlan(confirmModal.productId);
+                    setConfirmModal({
+                      isOpen: false,
+                      productId: null,
+                      planName: null,
+                      billingCycle: null,
+                    });
+                  }}
+                  className="flex-1 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-semibold"
+                >
+                  Confirm Activation
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

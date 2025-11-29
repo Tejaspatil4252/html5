@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPaperPlane, FaCheck, FaTimes } from 'react-icons/fa';
 import FormLoader from '../FormLoader';
+import RecaptchaComponent from '../ReCaptchaComponent';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +14,19 @@ const ContactForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null); 
+  const [recaptchaError, setRecaptchaError] = useState(''); 
   
   // Same popup state as CareerForm
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+
+   
+  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+  if (!RECAPTCHA_SITE_KEY) {
+    console.warn('reCAPTCHA site key not found in environment variables');
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -25,8 +35,21 @@ const ContactForm = () => {
     });
   };
 
+  // Add recaptcha verification handler
+  const handleRecaptchaVerify = (token) => {
+    setRecaptchaToken(token);
+    setRecaptchaError('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate reCAPTCHA
+    if (!recaptchaToken) {
+      setRecaptchaError('Please complete the reCAPTCHA verification');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -40,7 +63,8 @@ const ContactForm = () => {
           email: formData.email,
           phone: formData.phone,
           interestedIn: formData.interestedIn,
-          requirementDetail: formData.requirementDetail
+          requirementDetail: formData.requirementDetail,
+          recaptchaToken: recaptchaToken // Add recaptcha token to request
         })
       });
 
@@ -67,6 +91,9 @@ const ContactForm = () => {
         interestedIn: '',
         requirementDetail: ''
       });
+      
+      // Reset recaptcha
+      setRecaptchaToken(null);
 
     } catch (error) {
       console.error('Submission error:', error);
@@ -200,12 +227,36 @@ const ContactForm = () => {
                 />
               </div>
 
+              {/* 🔐 RECAPTCHA COMPONENT - ADD THIS SECTION */}
+              <div className="border-t border-gray-200 pt-6">
+                <label className="block text-sm font-semibold text-gray-700 mb-4">
+                  Security Verification *
+                </label>
+                <RecaptchaComponent 
+                  onVerify={handleRecaptchaVerify}
+                  siteKey={RECAPTCHA_SITE_KEY}
+                  action="contact_submit"
+                  className="mb-2"
+                />
+                
+                {/* Recaptcha Error Message */}
+                {recaptchaError && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="text-red-600 text-sm font-medium mt-2 p-2 bg-red-50 border border-red-200 rounded-lg"
+                  >
+                    {recaptchaError}
+                  </motion.div>
+                )}
+              </div>
+
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                disabled={isSubmitting}
-                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                disabled={isSubmitting || !recaptchaToken} // Disable if no recaptcha
+                whileHover={{ scale: (isSubmitting || !recaptchaToken) ? 1 : 1.02 }}
+                whileTap={{ scale: (isSubmitting || !recaptchaToken) ? 1 : 0.98 }}
                 className="w-full bg-red-600 text-white py-4 rounded-xl font-semibold hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed transition-colors duration-300 flex items-center justify-center gap-3 text-lg"
               >
                 {isSubmitting ? (

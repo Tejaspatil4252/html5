@@ -29,7 +29,7 @@ const PricingCards = () => {
     checkAuth();
   }, []);
 
-    // ✅ UPDATED LOG FAILED PAYMENT FUNCTION
+    // LOG FAILED PAYMENT FUNCTION
 const logFailedPaymentToBackend = async (
   razorpayResponse,
   plan,
@@ -65,6 +65,8 @@ const logFailedPaymentToBackend = async (
     console.error("Failed to log payment failure:", err);
   }
 };
+
+
   
   // Razorpay Payment Handler
 const handlePayment = async (plan) => {
@@ -106,7 +108,40 @@ const handlePayment = async (plan) => {
 
     const orderData = await orderResponse.json();
 
-    // Razorpay checkout options
+const updatePendingTransactionOnExit = async (orderId, plan, branch) => {
+  
+  
+  try {
+    const response = await fetch("http://localhost:8080/api/payments/payment-exited", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      body: JSON.stringify({
+        razorpay_order_id: orderId,
+        planId: plan.planId,
+        branchId: branch.branchId,
+      }),
+    });
+
+    
+    
+    if (response.ok) {
+     
+      const result = await response.json();
+     
+    } else {
+    
+      const errorText = await response.text();
+    
+    }
+  } catch (error) {
+ 
+  }
+};
+ 
+// Razorpay checkout options
 const options = {
   key: import.meta.env.VITE_RAZORPAY_KEY_ID,
   amount: orderData.amount,
@@ -118,7 +153,7 @@ const options = {
     try {
       // ✅ STEP 1: Payment successful - verify on backend FIRST
       const verifyResponse = await fetch(
-        "http://localhost:8080/api/payments/verify", // KEEP PAYMENT VERIFICATION
+        "http://localhost:8080/api/payments/verify",
         {
           method: "POST",
           headers: {
@@ -141,9 +176,9 @@ const options = {
       const verificationResult = await verifyResponse.json();
 
       if (verificationResult.success) {
-        // ✅ STEP 2: After successful payment verification, call NEW subscription system
+        
         const subscriptionResponse = await fetch(
-          "http://localhost:8080/api/subscriptions/purchase", // NEW ENDPOINT
+          "http://localhost:8080/api/subscriptions/purchase",
           {
             method: "POST",
             headers: {
@@ -152,7 +187,7 @@ const options = {
             },
             body: JSON.stringify({
               branchId: selectedBranch.branchId,
-              productType: activeProduct, // "EYMS" or "BWMS"
+              productType: activeProduct,
               planId: plan.planId,
             }),
           }
@@ -189,12 +224,23 @@ const options = {
   theme: {
     color: "#EF4444",
   },
-  modal: {
-    ondismiss: function () {
-      setPaymentLoading(false);
-      toast.error("Payment cancelled");
-    },
+modal: {
+  ondismiss: function () {
+    setPaymentLoading(false);
+    
+    // ✅ PERFECT BALANCE - RED THEME BUT FRIENDLY MESSAGE
+    toast.error("Payment not completed - feel free to try again later", {
+      style: {
+        background: '#EF4444',
+        color: 'white',
+      },
+      icon: '⏳', // Hourglass icon
+      duration: 3000,
+    });
+    
+    updatePendingTransactionOnExit(orderData.id, plan, selectedBranch);
   },
+},
 };
 
     const razorpay = new window.Razorpay(options);
