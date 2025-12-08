@@ -44,7 +44,7 @@ const HomeSectionWhatWeDo = () => {
         "Software Development",
         "Testing & QA", 
         "Application Services",
-        "IT Consulting",
+        "Software Consulting",
       "AI & Machine Learning",
       "Cloud & DevOps Automation",
          "AI Automation ",

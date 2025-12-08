@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaRocket, FaBrain, FaChartLine } from 'react-icons/fa';
+import { FaRocket, FaBrain, FaChartLine, FaNetworkWired, } from 'react-icons/fa';
 
 // Import images
 import customUI from '../../assets/homeIMG/custom-header.jpg';
@@ -136,7 +136,8 @@ const HomeSection1 = () => {
               {[
                 { icon: FaBrain, label: "Machine Learning", color: "text-white" },
                 { icon: FaRocket, label: "AI Automation", color: "text-red-200" },
-                { icon: FaChartLine, label: "Smart Analytics", color: "text-red-300" }
+                { icon: FaNetworkWired, label: "Deep Learning", color: "text-red-300" }
+                
               ].map((feature, index) => (
                 <motion.div
                   key={feature.label}

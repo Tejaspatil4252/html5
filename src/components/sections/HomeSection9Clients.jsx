@@ -67,34 +67,22 @@ const HomeSection9Clients = () => {
 
   const visibleClients = showAll ? clients : clients.slice(0, 10);
 
-  return (
+return (
     <section className="bg-white py-16 lg:py-20">
       <div className="container mx-auto px-4">
         
-        {/* Enhanced Header Section */}
+        {/* Header Section */}
         <motion.div 
-          className="text-center mb-14 lg:mb-16"
+          className="text-center mb-16 lg:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <motion.div
-            className="inline-block mb-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            <div className="w-16 h-1 bg-red-600 mx-auto mb-4 rounded-full"></div>
-          </motion.div>
+          <div className="w-20 h-1 bg-gradient-to-r from-red-500 to-red-600 mx-auto mb-6 rounded-full"></div>
           
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-5"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.15 }}
-          >
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Trusted by <span className="text-red-600">Global Leaders</span>
-          </motion.h2>
+          </h2>
           
           <motion.p 
             className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
@@ -106,82 +94,81 @@ const HomeSection9Clients = () => {
           </motion.p>
         </motion.div>
 
-        {/* Enhanced Client Logos Grid */}
-        <div className="flex justify-center mb-10">
+        {/* Professional Logo Grid */}
+        <div className="flex justify-center">
           <motion.div 
-            className={`grid gap-4 sm:gap-6 ${
+            className={`w-full max-w-6xl grid gap-8 ${
               showAll 
-                ? 'max-w-7xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7' 
-                : 'max-w-5xl grid-cols-5'
+                ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6' 
+                : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
             }`}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.25 }}
+            transition={{ duration: 0.5 }}
           >
             {visibleClients.map((client, index) => (
               <motion.div
                 key={client.id}
-                className="flex justify-center"
-                initial={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ 
                   duration: 0.3,
-                  delay: showAll ? index * 0.03 : index * 0.05
+                  delay: index * 0.05
                 }}
                 whileHover={{ 
                   scale: 1.05,
-                  transition: { duration: 0.15 }
+                  transition: { duration: 0.2 }
                 }}
               >
-                {/* Enhanced Logo Card - REMOVED grayscale */}
-                <div className="group bg-white rounded-2xl p-4 sm:p-5 hover:shadow-2xl transition-all duration-200 border border-gray-100 hover:border-red-200 w-full max-w-[140px] sm:max-w-[150px] relative overflow-hidden">
-                  
-                  {/* Hover Effect Background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-2xl"></div>
-                  
-                  {/* Enhanced Logo Image - REMOVED grayscale filter */}
-                  <motion.img 
+                {/* Professional Logo Image Only */}
+                <div className="relative group">
+                  <img 
                     src={client.logo} 
-                    className="relative z-10 w-full h-18 sm:h-22 md:h-24 object-contain transition-all duration-200 group-hover:scale-110"
-                    alt={`Client ${client.id}`}
-                    whileHover={{ scale: 1.15, transition: { duration: 0.15 } }}
+                    className="h-12 sm:h-14 md:h-16 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300 filter hover:brightness-110"
+                    alt={`${client.name || 'Client'} Logo`}
+                    loading="lazy"
+                    style={{
+                      maxWidth: '140px',
+                      minHeight: '48px'
+                    }}
                   />
                   
-                  {/* Modern Hover Outline Effect */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-red-300 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.15)] transition-all duration-200"></div>
+                  {/* Subtle hover effect */}
+                  <div className="absolute -inset-2 bg-gradient-to-r from-red-50 to-transparent opacity-0 group-hover:opacity-30 rounded-lg blur-sm transition-opacity duration-300"></div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
 
-        {/* Enhanced Creative Button Section */}
+        {/* Button Section with Red Color Scheme */}
         <motion.div 
-          className="text-center mt-12"
+          className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
         >
           {/* Decorative elements */}
-          <div className="relative flex items-center justify-center mb-8">
+          <div className="relative flex items-center justify-center mb-10">
             <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent w-32"></div>
             <div className="mx-4 w-2 h-2 bg-red-600 rounded-full"></div>
             <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent w-32"></div>
           </div>
 
-          {/* Enhanced Animated Button */}
+          {/* Red Colored Button */}
           <motion.button
             onClick={() => setShowAll(!showAll)}
-            className="relative bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-2xl transition-all duration-200 overflow-hidden group"
+            className="relative bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             whileHover={{ 
               scale: 1.05,
               y: -2,
-              transition: { duration: 0.15 }
+              transition: { duration: 0.2 }
             }}
-            whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
+            whileTap={{ scale: 0.98 }}
           >
             {/* Button background animation */}
-            <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-800 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
             {/* Button text and icon */}
             <span className="relative z-10 flex items-center justify-center gap-3">
@@ -195,7 +182,7 @@ const HomeSection9Clients = () => {
                     viewBox="0 0 24 24"
                     initial={{ rotate: 180 }}
                     animate={{ rotate: 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.3 }}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                   </motion.svg>
@@ -208,9 +195,12 @@ const HomeSection9Clients = () => {
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
-                    initial={{ rotate: 0 }}
-                    animate={{ rotate: 0 }}
-                    transition={{ duration: 0.2 }}
+                    animate={{ y: [0, 5, 0] }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse"
+                    }}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </motion.svg>
@@ -218,19 +208,19 @@ const HomeSection9Clients = () => {
               )}
             </span>
             
-            {/* Shine effect on hover */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+            {/* Shine effect */}
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
           </motion.button>
 
-          {/* Client count badge */}
+          {/* Client count badge with red accent */}
           <motion.div 
-            className="mt-6"
+            className="mt-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.5 }}
           >
             <span className="inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium border border-gray-200">
-              {clients.length}+ Trusted Partnerships
+              <span className="text-red-600 font-bold">{clients.length}+</span> Trusted Partnerships
             </span>
           </motion.div>
         </motion.div>

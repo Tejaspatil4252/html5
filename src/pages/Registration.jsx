@@ -35,6 +35,7 @@ const Registration = () => {
     pinCode: "",
     state: "",
     district: "",
+    city: "",
     gstNo: "",
     panNo: "",
     tanNo: "",
@@ -153,6 +154,12 @@ const validateField = useCallback((name, value) => {
     case "district":
       if (!value) {
         errors.district = "District is required";
+        isValid = false;
+      }
+      break;
+        case "city":
+      if (!value) {
+        errors.city = "City name is required";
         isValid = false;
       }
       break;
@@ -378,7 +385,8 @@ const validateField = useCallback((name, value) => {
         const errors = [];
         if (!formData.pinCode?.trim()) errors.push("Pin code is required");
         if (!formData.state) errors.push("State is required");
-        if (!formData.district) errors.push("City is required");
+        if (!formData.district) errors.push("District is required");
+        if (!formData.city) errors.push("city is required");
         return errors;
       },
       3: () => {
@@ -445,9 +453,10 @@ const handleSubmit = async (e) => {
       district: Number(formData.district),
       stateName: selectedState?.jarName || "",
       districtName: selectedDistrict?.jarName || "",
+      cityName: formData.city,
       gstNo: formData.gstNo,
       panNo: formData.panNo,
-      tanNo: formData.tanNo || "",
+      tanNo: formData.tanNo || "",  
       contactNo: formData.contactNo,
       personName: formData.personName,
       personDesignation: formData.personDesignation || "",
@@ -491,6 +500,7 @@ const handleSubmit = async (e) => {
         pinCode: "",
         state: "",
         district: "",
+        city: "",
         gstNo: "",
         panNo: "",
         tanNo: "",
@@ -734,8 +744,13 @@ const handleSubmit = async (e) => {
             name: "district",
             label: "Select District *",
             type: "search-select",
-            fullWidth: true,
             disabled: !formData.state || loadingDistricts,
+          },
+              {
+            name: "city",
+            label: "City *",
+            type: "text",
+            placeholder: "City name",
           },
           {
             name: "tanNo",

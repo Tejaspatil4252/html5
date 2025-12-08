@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Package, Gear, UsersThree } from 'phosphor-react';
+import { Package, Gear, UsersThree, CurrencyDollar, Tag } from 'phosphor-react';
 import { Link } from 'react-router-dom';
 
 const HomeSection2Cards = () => {
@@ -17,12 +17,12 @@ const HomeSection2Cards = () => {
       description: "The right choice is the one that not only makes the design, development and deployment in the most effective way but ...",
       link: "/services",
     },
-    {
-      icon: UsersThree,
-      title: "Consulting",
-      description: "Our consulting will equip you with a fresh outlook to approach ideas. If you already have an idea, we will help you polish and ...",
-      link: "/contact",
-    }
+{
+  icon: Tag, // or Banknotes, CreditCard, etc.
+  title: "Pricing",
+  description: "Transparent pricing with no hidden fees. Choose from our tiered plans designed to match your business size and requirements...",
+  link: "/pricing",
+}
   ];
 
   const containerVariants = {

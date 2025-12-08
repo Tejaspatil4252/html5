@@ -192,7 +192,7 @@ const HomeSection3Welcome = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                As India's premier shipping software innovator, we leverage cutting-edge AI and machine learning to revolutionize supply chain management. Our intelligent platforms drive efficiency, reduce costs, and propel businesses into the future.
+               As India's premier shipping software innovator, we leverage cutting-edge AI, deep learning, and machine learning to revolutionize supply chain management. Our intelligent platforms, powered by advanced neural networks and predictive algorithms, drive efficiency, reduce costs, and propel businesses into the future.
               </motion.p>
 
               {/* Enhanced CTA Buttons */}
@@ -309,7 +309,7 @@ const HomeSection3Welcome = () => {
                       icon: FaGlobe
                     },
                     { 
-                      title: "Real-Time Analytics", 
+                      title: "Real-Time Smart Analytics", 
                       desc: "Data-driven insights for informed decision making",
                       icon: FaRocket
                     }

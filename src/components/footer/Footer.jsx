@@ -343,13 +343,13 @@ const Footer = ({ onProductSelect, onServiceSelect }) => {
           {/* Bottom Bar */}
           <motion.div 
             className="border-t border-white/20 pt-6 pb-4"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 0 }}npm 
             animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
               <p className="text-gray-400 text-base text-center lg:text-left font-light">
-                © {new Date().getFullYear()} <span className="text-white font-semibold">Rapptorsoft Technologies</span>. 
+                © {new Date().getFullYear()} <span className="text-white font-semibold">Rapportsoft Technologies</span>. 
                 All rights reserved. Crafting the future of shipping technology.
               </p>
               

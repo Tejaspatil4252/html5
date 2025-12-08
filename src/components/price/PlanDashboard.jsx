@@ -545,7 +545,7 @@ const validateUpdateUserForm = (userData) => {
     errors.mobileNo = "Mobile number must be exactly 10 digits";
   }
   
-  // Password validation (optional but must be strong if provided)
+  // Password validation 
   if (userData.newPassword && userData.newPassword.length < 6) {
     errors.newPassword = "Password must be at least 6 characters";
   }
