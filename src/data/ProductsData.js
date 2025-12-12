@@ -30,7 +30,7 @@ import whatsapp from "../assets/productImages/whatsapp.jpg";
   image: cfsNavImage,
   description: "CFSNAV revolutionizes Container Freight Station operations with a comprehensive, all-in-one digital platform built for modern logistics. Combining cutting-edge microservices architecture with intuitive React Native interfaces, it delivers seamless management across web, mobile, and thin clients from a unified codebase. From automated import/export workflows and real-time container tracking to intelligent billing systems and customer self-service portals, CFSNAV transforms traditional CFS operations into efficient, transparent, and scalable digital workflows. With enterprise-grade security, cloud-native deployment, and extensive integration capabilities, it empowers businesses to reduce operational costs by up to 40%, improve turnaround times by 60%, and deliver superior customer experiences while maintaining full regulatory compliance.",
   highlights: [
-    "Microservices architecture with Spring Boot backend & React Native frontend",
+    "Microservices architecture with Spring Boot backend & ReactJS frontend",
     "Unified platform for Web, Android, iOS, and Thin Clients",
     "Cloud-native deployment for scalability and high availability",
     "Enterprise security: JWT, OAuth2, HTTPS, and Two-Factor Authentication",
@@ -70,7 +70,7 @@ import whatsapp from "../assets/productImages/whatsapp.jpg";
   features: {
     title: "Core Functional Modules",
     items: [
-      "Complete Import, DPD, Export & Bonded Operations management",
+      "Complete Import, DPD, Export & Bonded Operations management, General Warehouse and EYMS",
       "Automated mail and auction processing systems",
       "Real-time rich UI dashboards for all operational areas",
       "Automated receivable management with invoice generation",
